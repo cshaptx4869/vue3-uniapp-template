@@ -1,0 +1,10 @@
+unpackage
+node_modules
+uni_modules
+static
+.husky
+.hbuilderx
+.vscode
+.idea
+*.sh
+*.md
