@@ -1,0 +1,31 @@
+{
+  "name": "uniapp-vue3-template",
+  "version": "1.0.0",
+  "description": "基于vue3的uniapp快速开发模板",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "commit": "git-cz"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cshaptx4869/vue3-uniapp-template"
+  },
+  "keywords": [
+    "uniapp",
+    "vue3",
+    "pinia",
+    "uv-ui"
+  ],
+  "author": "cshaptx4869",
+  "license": "MIT",
+  "devDependencies": {
+    "commitizen": "^4.3.0",
+    "cz-git": "^1.9.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-git"
+    }
+  }
+}
