@@ -5,6 +5,7 @@
   "main": "main.js",
   "scripts": {
     "prepare": "husky",
+    "lint:prettier": "prettier --write \"**/*.{js,cjs,ts,json,tsx,css,less,scss,vue,html,md}\"",
     "lint:lint-staged": "lint-staged",
     "commit": "git-cz"
   },
