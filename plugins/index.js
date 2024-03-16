@@ -3,3 +3,4 @@ import setupUV from "@/uni_modules/uv-ui-tools";
 export { setupUV };
 export * from "./store";
 export * from "./http";
+export * from "./router";
