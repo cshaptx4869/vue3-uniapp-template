@@ -14,6 +14,9 @@ export default {
 
 <style lang="scss">
 /*每个页面公共css */
+page {
+  height: 100vh;
+}
 
 /* uv-ui基础样式 */
 @import "@/uni_modules/uv-ui-tools/index.scss";
