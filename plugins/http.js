@@ -1,9 +1,8 @@
-import setupUV from "@/uni_modules/uv-ui-tools";
 import * as api from "@/api";
 import { useUserStore } from "@/store";
 
 /* 拦截器 */
-function setupInterceptor(app, options) {
+function setupInterceptor() {
   // 初始化请求配置
   uni.$uv.http.setConfig((config) => {
     // 域名设置
@@ -116,14 +115,8 @@ function setupInterceptor(app, options) {
   );
 }
 
-/* APi */
-function setupApi(app, options) {
+export function setupHttp(app) {
   uni.$api = api;
   app.config.globalProperties.$api = api;
-}
-
-export function setupHttp(app, options) {
-  !uni.$uv && app.use(setupUV);
-  setupInterceptor(app, options);
-  setupApi(app, options);
+  setupInterceptor();
 }
