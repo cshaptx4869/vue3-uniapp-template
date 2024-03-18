@@ -1,5 +1,7 @@
 <template>
   <view class="container">
+    <image class="logo" src="/static/logo.png"></image>
+    <HelloWorld></HelloWorld>
     <uv-button
       type="primary"
       text="发起网络请求"
@@ -29,11 +31,19 @@ function handleRoute() {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .container {
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-end;
+
+  .logo {
+    height: 200rpx;
+    width: 200rpx;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 50rpx;
+  }
 }
 </style>
