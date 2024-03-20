@@ -70,8 +70,7 @@ function setupInterceptor() {
     // 引用token
     if (config.custom.auth) {
       const userStore = useUserStore();
-      const token = userStore.user.token;
-      config.header.Authorization = token;
+      config.header.Authorization = userStore.token;
     }
 
     // 最后需要将config进行return

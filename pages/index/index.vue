@@ -1,33 +1,35 @@
 <template>
   <view class="container">
-    <image class="logo" src="/static/logo.png"></image>
-    <HelloWorld></HelloWorld>
-    <uv-button
-      type="primary"
-      text="发起网络请求"
-      @click="handleRequest"
-    ></uv-button>
-    <view v-if="userList.length > 0">
-      <view v-for="item in userList" :key="item.id">
-        <view>{{ item.username + "-" + item.age }}</view>
-      </view>
+    <view>
+      <image class="logo" src="/static/logo.png"></image>
+      <HelloWorld></HelloWorld>
+      <template v-if="userStore.token">
+        <view class="token">
+          {{ "Token: " + userStore.token }}
+        </view>
+      </template>
     </view>
-    <uv-button type="warning" text="路由拦截" @click="handleRoute"></uv-button>
+
+    <view>
+      <uv-button type="warning" text="鉴权跳转" @click="handleJump"></uv-button>
+      <template v-if="userStore.token">
+        <uv-button type="error" text="注销" @click="handleLogout"></uv-button>
+      </template>
+    </view>
   </view>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { useUserStore } from "@/store";
 
-const userList = ref([]);
-function handleRequest() {
-  uni.$api.user.getUserList().then((res) => {
-    userList.value = res;
-  });
+const userStore = useUserStore();
+
+function handleJump() {
+  uni.$uv.route("/pagesA/test/test");
 }
 
-function handleRoute() {
-  uni.$uv.route("/pagesA/test/test");
+function handleLogout() {
+  userStore.signOut();
 }
 </script>
 
@@ -36,14 +38,17 @@ function handleRoute() {
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content: space-between;
 
   .logo {
+    display: block;
     height: 200rpx;
     width: 200rpx;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 50rpx;
+    margin: 50rpx auto;
+  }
+
+  .token {
+    word-break: break-all;
   }
 }
 </style>

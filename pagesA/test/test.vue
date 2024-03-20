@@ -1,9 +1,17 @@
 <template>
-  <view>
-    <uv-text type="success" text="pagesA 分包页面"></uv-text>
+  <view class="container">
+    <view class="title">pagesA 分包页面</view>
   </view>
 </template>
 
 <script setup></script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+</style>

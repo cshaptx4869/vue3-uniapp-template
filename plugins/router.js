@@ -1,7 +1,10 @@
+import { useUserStore } from "@/store";
+
 function hasPermission(url) {
-  const whiteList = ["/pages/login/login"];
+  const whiteList = ["/pages/login/login", "/pages/index/index"];
+  const userStore = useUserStore();
   // 在白名单中或有token，直接跳转
-  if (whiteList.includes(url) || uni.getStorageSync("token")) {
+  if (whiteList.includes(url) || userStore.token) {
     return true;
   }
   return false;
@@ -19,7 +22,7 @@ function setupInterceptor() {
           // 将用户的目标路径保存下来
           // 这样可以实现用户登录之后，直接跳转到目标页面
           // uni.setStorageSync("URL", args.url);
-          uni.navigateTo({
+          uni.redirectTo({
             url: "/pages/login/login",
           });
           return false;
