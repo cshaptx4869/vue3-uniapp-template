@@ -1,7 +1,10 @@
 <template>
   <view class="container">
-    <uv-button type="primary" text="注册" @click="handleRegister"></uv-button>
-    <uv-button type="success" text="登录" @click="handleLogin"></uv-button>
+    <view class="title">登录注册页</view>
+    <view>
+      <uv-button type="primary" text="注册" @click="handleRegister"></uv-button>
+      <uv-button type="success" text="登录" @click="handleLogin"></uv-button>
+    </view>
   </view>
 </template>
 
@@ -41,6 +44,13 @@ async function handleLogin() {
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content: space-between;
+
+  .title {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }
 </style>

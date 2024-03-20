@@ -11,7 +11,7 @@
     </view>
 
     <view>
-      <uv-button type="warning" text="鉴权跳转" @click="handleJump"></uv-button>
+      <uv-button type="warning" text="路由跳转" @click="handleJump"></uv-button>
       <template v-if="userStore.token">
         <uv-button type="error" text="注销" @click="handleLogout"></uv-button>
       </template>
