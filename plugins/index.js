@@ -7,11 +7,11 @@ export default {
   install(app) {
     // 状态管理
     app.use(setupStore);
-    // 路由拦截
-    app.use(setupRouter);
     // UV扩展配置 https://www.uvui.cn/components/setting.html
     app.use(setupUV);
     // 请求响应拦截
     app.use(setupHttp);
+    // 路由拦截
+    app.use(setupRouter);
   },
 };

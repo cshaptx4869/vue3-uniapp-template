@@ -1,13 +1,19 @@
 import { useUserStore } from "@/store";
 
 function hasPermission(url) {
-  const whiteList = ["/pages/login/login", "/pages/index/index"];
   const userStore = useUserStore();
-  // 在白名单中或有token，直接跳转
-  if (whiteList.includes(url) || userStore.token) {
-    return true;
-  }
-  return false;
+  const whiteList = [/^\/pages\/login\/login\??/i, "/pages/index/index"];
+  const isPassed = whiteList.some((item) => {
+    if (typeof item === "string") {
+      return item === url;
+    }
+    if (item instanceof RegExp) {
+      return item.test(url);
+    }
+    return false;
+  });
+  // 在白名单中或有token 直接跳转
+  return isPassed || !!userStore.token;
 }
 
 // 拦截器
@@ -27,11 +33,13 @@ function setupInterceptor() {
       // 页面跳转前进行拦截, invoke根据返回值进行判断是否继续执行跳转
       invoke(args) {
         if (!hasPermission(args.url)) {
-          // 将用户的目标路径保存下来
-          // 这样可以实现用户登录之后，直接跳转到目标页面
-          // uni.setStorageSync("URL", args.url);
-          uni.redirectTo({
+          // 将用户的目标路径传递过去，这样可以实现用户登录之后，直接跳转到目标页面
+          uni.$uv.route({
+            type: "redirectTo",
             url: "/pages/login/login",
+            params: {
+              redirect: args.url,
+            },
           });
           return false;
         }

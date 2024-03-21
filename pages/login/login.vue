@@ -10,6 +10,14 @@
 
 <script setup>
 import { useUserStore } from "@/store";
+import { onLoad } from "@dcloudio/uni-app";
+
+let redirect = "/pages/index/index";
+onLoad((options) => {
+  if (options.redirect) {
+    redirect = options.redirect;
+  }
+});
 
 const userStore = useUserStore();
 
@@ -22,7 +30,7 @@ async function handleRegister() {
   setTimeout(() => {
     uni.$uv.route({
       type: "redirectTo",
-      url: "/pages/index/index",
+      url: redirect,
     });
   }, 800);
 }
@@ -32,10 +40,13 @@ async function handleLogin() {
     username: "visitor",
     password: "123456",
   });
-  uni.$uv.route({
-    type: "redirectTo",
-    url: "/pages/index/index",
-  });
+  uni.$uv.toast("登录成功");
+  setTimeout(() => {
+    uni.$uv.route({
+      type: "redirectTo",
+      url: redirect,
+    });
+  }, 800);
 }
 </script>
 
