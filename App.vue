@@ -15,7 +15,7 @@ export default {
 <style lang="scss">
 /*每个页面公共css */
 page {
-  height: 100vh;
+  height: 100%;
 }
 
 /* uv-ui基础样式 */
