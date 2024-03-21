@@ -28,6 +28,11 @@ pnpm install
 
 
 
+## 效果预览
+![](https://img2024.cnblogs.com/blog/1215492/202403/1215492-20240321105000927-2080988420.png)
+
+
+
 ## 目录结构
 ```
 |-- api                          // 接口管理
@@ -70,13 +75,13 @@ pnpm install
 - 接口请求地址在根目录下的 .env.xxx 文件配置（development 为 “运行” 环境，production 为 “发行” 环境）
 - 打开 [uniapp 插件市场](https://ext.dcloud.net.cn)，搜索 [Prettier](https://ext.dcloud.net.cn/plugin?name=formator-prettier)，点击 “下载插件并导入HBuilderX” 安装插件，并配置 Prettier 插件
 
-![image.png](https://cdn.nlark.com/yuque/0/2024/png/1053862/1710421089413-dbb96131-5b1d-4c07-9387-f2bf27225f5a.png?x-oss-process=image%2Fformat%2Cwebp%2Fresize%2Cw_1500%2Climit_0)
+![](https://img2024.cnblogs.com/blog/1215492/202403/1215492-20240321105454228-124948398.png)
 
 - 设置 HBuilderX 保存时自动格式化
 
-![image.png](https://cdn.nlark.com/yuque/0/2024/png/1053862/1710421160286-7ca1f000-df06-483c-b849-fe9d56de733f.png?x-oss-process=image%2Fformat%2Cwebp)
+![](https://img2024.cnblogs.com/blog/1215492/202403/1215492-20240321105507711-1226718546.png)
 
 - Git 提交使用 `pnpm run commit` 命令
 
-![image.png](https://cdn.nlark.com/yuque/0/2024/png/1053862/1710421355958-e141736b-9e90-46fe-9224-4421353fd2d7.png?x-oss-process=image%2Fformat%2Cwebp)
+![](https://img2024.cnblogs.com/blog/1215492/202403/1215492-20240321105520195-1987680185.png)
 
