@@ -2,13 +2,9 @@
 
 ### 简介
 
-基于 vue3 的 uniapp 快速开发模板。主要使用的技术栈：
+vue3-uniapp-template 是基于 vue3 的 uniapp 快速开发模板，包含状态管理、网络请求、路由拦截、UI组件等常用功能。
 
-- [uniapp](https://uniapp.dcloud.net.cn/)
-- [vue3](https://cn.vuejs.org/)
-- [pinia](https://pinia.vuejs.org/zh/)
-- [vite](https://cn.vitejs.dev/)
-- [uv-ui](https://www.uvui.cn/)
+主要使用的技术栈：[uniapp](https://uniapp.dcloud.net.cn/)、[vue3](https://cn.vuejs.org/)、[pinia](https://pinia.vuejs.org/zh/)、[vite](https://cn.vitejs.dev/)、[uv-ui](https://www.uvui.cn/) 。
 
 
 
@@ -27,7 +23,44 @@ npm install pnpm -g
 # 安装依赖
 pnpm install
 
-# 启动HBuilderX运行
+# 启动HBuilderX运行项目
+```
+
+
+
+## 目录结构
+```
+|-- api                          // 接口管理
+|   |-- index.js
+|   |-- modules                  // api模块化目录
+|       |-- user.js
+|-- components                   // 项目组件库
+|   |-- HelloWorld               // 测试组件
+|       |-- HelloWorld.vue
+|-- hooks                        
+|   |-- usePermission.js         // 微信小程序端点击tabbar的底层逻辑不触发uni.switchTab的特殊处理
+|-- pages
+|   |-- index
+|   |   |-- index.vue
+|   |-- login
+|       |-- login.vue
+|-- pagesA                       // 分包A
+|   |-- test
+|       |-- test.vue
+|-- plugins                      // 插件管理
+|   |-- http.js                  // 网络请求
+|   |-- index.js                 
+|   |-- router.js                // 路由拦截
+|   |-- store.js                 // 状态管理  
+|-- static
+|   |-- logo.png
+|-- store                        // pinia
+|   |-- index.js
+|   |-- modules                  // store模块化目录
+|       |-- user.js
+|-- uni_modules
+|-- utils
+    |-- cache.js                 // 缓存管理工具
 ```
 
 
