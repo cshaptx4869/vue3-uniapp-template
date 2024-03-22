@@ -3,16 +3,15 @@
     <view>
       <image class="logo" src="/static/logo.png"></image>
       <HelloWorld></HelloWorld>
-      <template v-if="userStore.token">
-        <view class="token">
-          {{ "Token: " + userStore.token }}
-        </view>
+      <template v-if="userList.length > 0">
+        <view>{{ userList }}</view>
       </template>
     </view>
 
     <view>
+      <uv-button text="获取数据" @click="handleRequest"></uv-button>
       <uv-button type="warning" text="路由跳转" @click="handleJump"></uv-button>
-      <template v-if="userStore.token">
+      <template v-if="authStore.refreshToken">
         <uv-button type="error" text="注销" @click="handleLogout"></uv-button>
       </template>
     </view>
@@ -20,16 +19,25 @@
 </template>
 
 <script setup>
-import { useUserStore } from "@/store";
+import { ref } from "vue";
+import { useAuthStore } from "@/store";
 
-const userStore = useUserStore();
+const authStore = useAuthStore();
+
+const userList = ref([]);
+function handleRequest() {
+  uni.$api.user.getUserList().then((res) => {
+    console.log("获取用户数据", res);
+    userList.value = res;
+  });
+}
 
 function handleJump() {
   uni.$uv.route("/pagesA/test/test");
 }
 
 function handleLogout() {
-  userStore.signOut();
+  authStore.signOut();
 }
 </script>
 
@@ -45,10 +53,6 @@ function handleLogout() {
     height: 200rpx;
     width: 200rpx;
     margin: 50rpx auto;
-  }
-
-  .token {
-    word-break: break-all;
   }
 }
 </style>

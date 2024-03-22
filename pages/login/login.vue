@@ -9,7 +9,7 @@
 </template>
 
 <script setup>
-import { useUserStore } from "@/store";
+import { useAuthStore } from "@/store";
 import { onLoad } from "@dcloudio/uni-app";
 
 let redirect = "/pages/index/index";
@@ -19,10 +19,10 @@ onLoad((options) => {
   }
 });
 
-const userStore = useUserStore();
+const authStore = useAuthStore();
 
 async function handleRegister() {
-  await userStore.signUp({
+  await authStore.signUp({
     username: "visitor",
     password: "123456",
   });
@@ -36,7 +36,7 @@ async function handleRegister() {
 }
 
 async function handleLogin() {
-  await userStore.signIn({
+  await authStore.signIn({
     username: "visitor",
     password: "123456",
   });

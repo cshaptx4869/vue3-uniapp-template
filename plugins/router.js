@@ -1,7 +1,7 @@
-import { useUserStore } from "@/store";
+import { useAuthStore } from "@/store";
 
 function hasPermission(url) {
-  const userStore = useUserStore();
+  const authStore = useAuthStore();
   const whiteList = [/^\/pages\/login\/login\??/i, "/pages/index/index"];
   const isPassed = whiteList.some((item) => {
     if (typeof item === "string") {
@@ -13,7 +13,7 @@ function hasPermission(url) {
     return false;
   });
   // 在白名单中或有token 直接跳转
-  return isPassed || !!userStore.token;
+  return isPassed || !!authStore.refreshToken;
 }
 
 // 拦截器

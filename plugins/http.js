@@ -1,10 +1,24 @@
 import * as api from "@/api";
-import { useUserStore } from "@/store";
+import { useAuthStore } from "@/store";
 
 /* 拦截器 */
 function setupInterceptor() {
+  const http = uni.$uv.http;
+  const authStore = useAuthStore();
+  // 请求重试队列，每一项将是一个待执行的函数形式
+  let requests = [];
+  // 是否正在刷新token的标记
+  let isRefreshing = false;
+  // 请求头
+  const HEADER_ACCESS_TOKEN = "Authorization";
+  const HEADER_REFRESH_TOKEN = "Pass";
+  // code值
+  const CODE_SUCCESS = 200;
+  const CODE_ACCESS_TOKEN = 4003;
+  const CODE_REFRESH_TOKEN = 4004;
+
   // 初始化请求配置
-  uni.$uv.http.setConfig((config) => {
+  http.setConfig((config) => {
     // 域名设置
     config.baseURL = import.meta.env.VITE_BASE_URL;
     // 全局header
@@ -58,7 +72,7 @@ function setupInterceptor() {
   });
 
   // 请求拦截部分，如配置，每次请求前都会执行
-  uni.$uv.http.interceptors.request.use((config) => {
+  http.interceptors.request.use((config) => {
     // loading
     if (config.custom.loading) {
       uni.showLoading({
@@ -69,8 +83,7 @@ function setupInterceptor() {
 
     // 引用token
     if (config.custom.auth) {
-      const userStore = useUserStore();
-      config.header.Authorization = userStore.token;
+      config.header[HEADER_ACCESS_TOKEN] = authStore.accessToken;
     }
 
     // 最后需要将config进行return
@@ -79,7 +92,7 @@ function setupInterceptor() {
   });
 
   // 响应拦截，如配置，每次请求结束都会执行本方法
-  uni.$uv.http.interceptors.response.use(
+  http.interceptors.response.use(
     (response) => {
       /* 对响应成功做点什么 可使用async await 做异步操作*/
 
@@ -91,10 +104,39 @@ function setupInterceptor() {
       // 服务器返回的数据
       let result = response.data;
       // if 与后台规定的成功码是否正常
-      if (result.code == 200) {
+      if (result.code == CODE_SUCCESS) {
         return result.result || result.data;
-      } else if (result.code == 300) {
-        uni.$uv.toast("未登录!");
+      } else if (result.code == CODE_ACCESS_TOKEN) {
+        // 短token失效
+        return new Promise((resolve, reject) => {
+          // 将resolve放进重试队列，用一个函数形式来保存，等token刷新后直接执行
+          requests.push(() => resolve(http.request(response.config)));
+          // 刷新短token
+          if (!isRefreshing) {
+            isRefreshing = true;
+            authStore
+              .refresh({
+                [HEADER_REFRESH_TOKEN]: authStore.refreshToken,
+              })
+              .then(() => {
+                requests.forEach((request) => request());
+              })
+              .catch(() => {
+                authStore.signOut();
+                uni.$uv.route({
+                  type: "redirectTo",
+                  url: "/pages/login/login",
+                });
+              })
+              .finally(() => {
+                requests = [];
+                isRefreshing = false;
+              });
+          }
+        });
+      } else if (result.code == CODE_REFRESH_TOKEN) {
+        //长token失效
+        return Promise.reject(response);
       } else {
         uni.$uv.toast(result.msg);
       }
