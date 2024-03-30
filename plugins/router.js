@@ -32,6 +32,7 @@ function setupInterceptor() {
     uni.addInterceptor(item, {
       // 页面跳转前进行拦截, invoke根据返回值进行判断是否继续执行跳转
       invoke(args) {
+        // args为所拦截api中的参数，比如拦截的是uni.redirectTo(OBJECT)，则args对应的是OBJECT参数
         if (!hasPermission(args.url)) {
           // 将用户的目标路径传递过去，这样可以实现用户登录之后，直接跳转到目标页面
           uni.$uv.route({

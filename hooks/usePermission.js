@@ -1,13 +1,12 @@
-import { useUserStore } from "@/store";
+import { useAuthStore } from "@/store";
 import { onShow } from "@dcloudio/uni-app";
 
-// 注意：这是针对微信小程序端点击tabbar的底层逻辑不触发uni.switchTab的特殊处理
+// 对某些特殊场景需要在页面onShow生命周期中校验权限
+// 比如微信小程序端点击tabbar的底层逻辑不触发uni.switchTab、h5在浏览器地址栏输入地址后跳转不触发uni的路由api
 export function usePermission() {
   onShow(() => {
-    console.log("Page Show");
-    // #ifdef MP-WEIXIN
-    const userStore = useUserStore();
-    if (!userStore.token) {
+    const authStore = useAuthStore();
+    if (!authStore.refreshToken) {
       const pages = getCurrentPages();
       const currentPage = pages[pages.length - 1];
       //跳转登陆页
@@ -15,10 +14,9 @@ export function usePermission() {
         type: "redirectTo",
         url: "/pages/login/login",
         params: {
-          redirect: currentPage.$page.fullPath,
+          redirect: currentPage?.$page?.fullPath || currentPage.route,
         },
       });
     }
-    // #endif
   });
 }
