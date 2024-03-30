@@ -4,7 +4,11 @@
   </view>
 </template>
 
-<script setup></script>
+<script setup>
+import { usePermission } from "@/hooks/usePermission";
+
+usePermission();
+</script>
 
 <style lang="scss" scoped>
 .container {
