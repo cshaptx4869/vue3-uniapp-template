@@ -1,24 +1,8 @@
 {
   "locale.auto": "系统",
-  "locale.en": "English",
+  "locale.en": "英语",
   "locale.zh-hans": "简体中文",
   "locale.zh-hant": "繁体中文",
   "locale.ja": "日语",
-  "index.title": "Hello i18n",
-  "index.home": "主页",
-  "index.component": "组件",
-  "index.api": "API",
-  "index.schema": "Schema",
-  "index.demo": "uni-app 国际化演示",
-  "index.demo-description": "包含 uni-framework、manifest.json、pages.json、tabbar、页面、组件、API、Schema",
-  "index.detail": "详情",
-  "index.language": "语言",
-  "index.language-info": "语言信息",
-  "index.system-language": "系统语言",
-  "index.application-language": "应用语言",
-  "index.language-change-confirm": "应用此设置将重启App",
-  "api.message": "提示",
-  "schema.name": "姓名",
-  "schema.add": "新增",
-  "schema.add-success": "新增成功"
+  "index.demo": "uni-app 国际化演示"
 }

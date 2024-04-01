@@ -29,22 +29,26 @@ const props = defineProps({
   },
 });
 
-const { locale } = useI18n();
+const { locale, t } = useI18n();
 const langStyle = {
   width: props.size + "rpx",
   height: props.size + "rpx",
 };
-const langOptions = [
-  { label: "English", value: "en" },
-  { label: "简体中文", value: "zh-Hans" },
-];
+const langOptions = computed(() => {
+  return [
+    { label: t("locale.en"), value: "en" },
+    { label: t("locale.zh-hans"), value: "zh-Hans" },
+    { label: t("locale.zh-hant"), value: "zh-Hant" },
+    { label: t("locale.ja"), value: "ja" },
+  ];
+});
 const langIndex = computed(() => {
-  return langOptions.findIndex((item) => {
+  return langOptions.value.findIndex((item) => {
     return item.value === locale.value;
   });
 });
 function handleLangChange(event) {
-  const lang = langOptions[event.detail.value].value;
+  const lang = langOptions.value[event.detail.value].value;
   locale.value = lang;
   uni.setLocale(lang);
   emit("change", lang);
