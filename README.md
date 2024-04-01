@@ -29,43 +29,73 @@ pnpm install
 
 
 ## 效果预览
-![](https://img2024.cnblogs.com/blog/1215492/202403/1215492-20240321105000927-2080988420.png)
+<img src="https://img2024.cnblogs.com/blog/1215492/202404/1215492-20240401100307219-1481721467.png" style="zoom: 50%;" />
 
 
 
 ## 目录结构
 ```
-|-- api                          // 接口管理
-|   |-- index.js
-|   |-- modules                  // api模块化目录
-|       |-- user.js
-|-- components                   // 项目组件库
-|   |-- HelloWorld               // 测试组件
-|       |-- HelloWorld.vue
-|-- hooks                        
-|   |-- usePermission.js         // 微信小程序端点击tabbar的底层逻辑不触发uni.switchTab的特殊处理
-|-- pages
-|   |-- index
-|   |   |-- index.vue
-|   |-- login
-|       |-- login.vue
-|-- pagesA                       // 分包A
-|   |-- test
-|       |-- test.vue
-|-- plugins                      // 插件管理
-|   |-- http.js                  // 网络请求
-|   |-- index.js                 
-|   |-- router.js                // 路由拦截
-|   |-- store.js                 // 状态管理  
-|-- static
-|   |-- logo.png
-|-- store                        // pinia
-|   |-- index.js
-|   |-- modules                  // store模块化目录
-|       |-- user.js
-|-- uni_modules
-|-- utils
-    |-- cache.js                 // 缓存管理工具
+vue3-uniapp-template
+├─ .editorconfig
+├─ .env.development					// 运行环境变量
+├─ .env.production					// 发行环境变量
+├─ .prettierignore
+├─ api								// 接口管理
+│  ├─ index.js
+│  └─ modules						// 接口模块化
+│     ├─ auth.js
+│     └─ user.js
+├─ App.vue
+├─ commitlint.config.js
+├─ components						// 项目组件库
+│  ├─ LangSelect					// 语言切换组件
+│  │  └─ LangSelect.vue
+│  └─ ScanCode						// h5扫一扫组件
+│     └─ ScanCode.vue
+├─ hooks							// hooks管理
+│  └─ usePermission.js				// 登录鉴权hook
+├─ index.html
+├─ LICENSE
+├─ lint-staged.config.js
+├─ locale							// 国际化管理
+│  ├─ en.json
+│  ├─ index.js
+│  ├─ ja.json
+│  ├─ uni-app.ja.json
+│  ├─ zh-Hans.json
+│  └─ zh-Hant.json
+├─ main.js
+├─ manifest.json
+├─ package.json
+├─ pages							// 页面管理
+│  ├─ index
+│  │  └─ index.vue
+│  └─ login
+│     └─ login.vue
+├─ pages.json
+├─ pagesA							// 分包A页面管理
+│  └─ test
+│     └─ test.vue
+├─ plugins							// 插件管理
+│  ├─ http.js						// 请求响应拦截
+│  ├─ i18n.js						// 国际化
+│  ├─ index.js
+│  ├─ router.js						// 路由拦截
+│  ├─ store.js						// 状态管理
+│  └─ ui.js							// UI扩展配置
+├─ prettier.config.js
+├─ README.md
+├─ static							// 静态资源管理
+│  └─ logo.png
+├─ store							// store管理
+│  ├─ index.js
+│  └─ modules						// store模块化
+│     ├─ auth.js
+│     └─ user.js
+├─ uni.scss
+├─ utils							// 工具管理
+│  └─ cache.js						// 缓存管理工具
+└─ vite.config.js
 ```
 
 
