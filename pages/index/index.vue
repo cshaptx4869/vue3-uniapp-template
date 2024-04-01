@@ -2,14 +2,17 @@
   <view class="container">
     <view>
       <image class="logo" src="/static/logo.png"></image>
-      <HelloWorld></HelloWorld>
+      <view class="title">{{ $t("index.demo") }}</view>
       <template v-if="userList.length > 0">
         <view>{{ userList }}</view>
       </template>
     </view>
 
     <view>
-      <uv-button text="获取数据" @click="handleRequest"></uv-button>
+      <uv-button text="请求数据" @click="handleRequest"></uv-button>
+      <LangSelect>
+        <uv-button type="primary" text="切换语言"></uv-button>
+      </LangSelect>
       <uv-button type="warning" text="路由跳转" @click="handleJump"></uv-button>
       <template v-if="authStore.refreshToken">
         <uv-button type="error" text="注销" @click="handleLogout"></uv-button>
@@ -53,6 +56,10 @@ function handleLogout() {
     height: 200rpx;
     width: 200rpx;
     margin: 50rpx auto;
+  }
+
+  .title {
+    text-align: center;
   }
 }
 </style>
