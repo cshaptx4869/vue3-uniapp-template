@@ -1,32 +1,24 @@
 import { useAuthStore } from "@/store";
+import { routes } from "@/utils/parseRoutes";
 
-function hasPermission(url) {
+function hasPermission(url = "") {
   const authStore = useAuthStore();
-  const whiteList = [/^\/pages\/login\/login\??/i, "/pages/index/index"];
-  const isPassed = whiteList.some((item) => {
-    if (typeof item === "string") {
-      return item === url;
+  const whiteList = [];
+  routes.forEach((item) => {
+    if (item.needLogin !== true) {
+      whiteList.push(item.path);
     }
-    if (item instanceof RegExp) {
-      return item.test(url);
-    }
-    return false;
   });
+  const path = url.split("?")[0];
   // 在白名单中或有token 直接跳转
-  return isPassed || !!authStore.refreshToken;
+  return whiteList.includes(path) || !!authStore.refreshToken;
 }
 
 // 拦截器
 function setupInterceptor() {
   // 注意：拦截uni.switchTab本身没有问题。但是在微信小程序端点击tabbar的底层逻辑并不是触发uni.switchTab。
   // 所以误认为拦截无效，此类场景的解决方案是在tabbar页面的页面生命周期onShow中处理。
-  const apiList = [
-    "navigateTo",
-    "redirectTo",
-    "reLaunch",
-    "switchTab",
-    "navigateBack",
-  ];
+  const apiList = ["navigateTo", "redirectTo", "reLaunch", "switchTab"];
   apiList.forEach((item) => {
     // https://uniapp.dcloud.net.cn/api/interceptor.html
     uni.addInterceptor(item, {
