@@ -72,7 +72,7 @@ vue3-uniapp-template
 │  │  └─ index.vue
 │  └─ login
 │     └─ login.vue
-├─ pages.json
+├─ pages.json						// 页面路由
 ├─ pagesA							// 分包A页面管理
 │  └─ test
 │     └─ test.vue
@@ -115,3 +115,6 @@ vue3-uniapp-template
 
 ![](https://img2024.cnblogs.com/blog/1215492/202403/1215492-20240321105520195-1987680185.png)
 
+- Web端发行时慎选树摇优化，会有奇葩的问题...
+
+![](https://img2024.cnblogs.com/blog/1215492/202404/1215492-20240401220614263-1710809111.png)
