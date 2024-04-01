@@ -9,15 +9,27 @@
     </view>
 
     <view>
-      <uv-button text="请求数据" @click="handleRequest"></uv-button>
+      <uv-button type="info" text="请求数据" @click="handleRequest"></uv-button>
       <LangSelect>
         <uv-button type="primary" text="切换语言"></uv-button>
       </LangSelect>
+      <uv-button
+        type="success"
+        text="扫一扫"
+        @click="handleScanCode"
+      ></uv-button>
       <uv-button type="warning" text="路由跳转" @click="handleJump"></uv-button>
       <template v-if="authStore.refreshToken">
         <uv-button type="error" text="注销" @click="handleLogout"></uv-button>
       </template>
     </view>
+    <!-- 扫码组件 -->
+    <ScanCode
+      v-if="h5ScanCode"
+      @success="handleScanSuccess"
+      @fail="handleScanFail"
+      @close="h5ScanCode = false"
+    ></ScanCode>
   </view>
 </template>
 
@@ -25,8 +37,7 @@
 import { ref } from "vue";
 import { useAuthStore } from "@/store";
 
-const authStore = useAuthStore();
-
+// 请求数据
 const userList = ref([]);
 function handleRequest() {
   uni.$api.user.getUserList().then((res) => {
@@ -35,12 +46,52 @@ function handleRequest() {
   });
 }
 
+// 路由跳转
 function handleJump() {
   uni.$uv.route("/pagesA/test/test");
 }
 
+// 注销
+const authStore = useAuthStore();
 function handleLogout() {
   authStore.signOut();
+}
+
+// 扫一扫
+const h5ScanCode = ref(false);
+function handleScanCode() {
+  // #ifdef H5
+  h5ScanCode.value = true;
+  // #endif
+  // #ifndef H5
+  uni.scanCode({
+    success: (res) => {
+      uni.showToast({
+        icon: "none",
+        title: res.result,
+      });
+    },
+    faile: (err) => {
+      console.log("err", err);
+    },
+  });
+  // #endif
+}
+function handleScanSuccess(res) {
+  h5ScanCode.value = false;
+  uni.showToast({
+    icon: "none",
+    title: res,
+  });
+}
+function handleScanFail(err) {
+  uni.showModal({
+    title: err.errName,
+    content: err.errMsg,
+    complete: () => {
+      h5ScanCode.value = false;
+    },
+  });
 }
 </script>
 

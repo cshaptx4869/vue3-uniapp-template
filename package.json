@@ -21,6 +21,9 @@
   ],
   "author": "cshaptx4869",
   "license": "MIT",
+  "dependencies": {
+    "vue-qrcode-reader": "^5.5.3"
+  },
   "devDependencies": {
     "@commitlint/cli": "^19.1.0",
     "@commitlint/config-conventional": "^19.1.0",
