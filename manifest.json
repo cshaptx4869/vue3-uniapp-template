@@ -77,6 +77,13 @@
       "treeShaking": {
         "enable": false
       }
+    },
+    "devServer": {
+      "https": false
+    },
+    "router": {
+      "mode": "history"
     }
-  }
+  },
+  "locale": "auto"
 }
