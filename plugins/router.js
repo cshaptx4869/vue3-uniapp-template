@@ -31,7 +31,7 @@ function setupInterceptor() {
             type: "redirectTo",
             url: "/pages/login/login",
             params: {
-              redirect: args.url,
+              redirect: encodeURIComponent(args.url),
             },
           });
           return false;

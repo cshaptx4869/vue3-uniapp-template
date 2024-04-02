@@ -14,7 +14,9 @@ export function usePermission() {
         type: "redirectTo",
         url: "/pages/login/login",
         params: {
-          redirect: currentPage?.$page?.fullPath || currentPage.route,
+          redirect: encodeURIComponent(
+            currentPage?.$page?.fullPath || currentPage.route
+          ),
         },
       });
     }
