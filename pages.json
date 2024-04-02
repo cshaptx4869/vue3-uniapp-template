@@ -14,6 +14,14 @@
         "enablePullDownRefresh": false,
         "navigationStyle": "custom"
       }
+    },
+    {
+      "path": "pages/404/404",
+      "style": {
+        "navigationBarTitleText": "404",
+        "enablePullDownRefresh": false,
+        "navigationStyle": "custom"
+      }
     }
   ],
   "subPackages": [
