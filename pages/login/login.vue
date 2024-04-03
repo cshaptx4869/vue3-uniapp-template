@@ -15,7 +15,7 @@ import { onLoad } from "@dcloudio/uni-app";
 let redirect = "/pages/index/index";
 onLoad((options) => {
   if (options.redirect) {
-    redirect = options.redirect;
+    redirect = decodeURIComponent(options.redirect);
   }
 });
 
