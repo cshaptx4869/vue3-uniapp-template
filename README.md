@@ -2,9 +2,9 @@
 
 ### 简介
 
-vue3-uniapp-template 是基于 vue3 的 uniapp 快速开发模板，包含状态管理、网络请求、路由拦截、UI组件、Token无感刷新等常用功能。
+vue3-uniapp-template 是基于 vue3 的 uniapp 快速开发模板，包含状态管理、网络请求、路由拦截、UI组件、国际化、Token无感刷新等常用功能。
 
-主要使用的技术栈：[uniapp](https://uniapp.dcloud.net.cn/)、[vue3](https://cn.vuejs.org/)、[pinia](https://pinia.vuejs.org/zh/)、[vite](https://cn.vitejs.dev/)、[uv-ui](https://www.uvui.cn/) 。
+主要使用的技术栈：[uniapp](https://uniapp.dcloud.net.cn/)、[vue3](https://cn.vuejs.org/)、[pinia](https://pinia.vuejs.org/zh/)、[vite](https://cn.vitejs.dev/)、[vue-i18n](https://kazupon.github.io/vue-i18n/)、[uv-ui](https://www.uvui.cn/) 。
 
 
 
@@ -50,8 +50,6 @@ vue3-uniapp-template
 ├─ components						// 项目组件库
 │  ├─ LangSelect					// 语言切换组件
 │  │  └─ LangSelect.vue
-│  └─ ScanCode						// h5扫一扫组件
-│     └─ ScanCode.vue
 ├─ hooks							// hooks管理
 │  └─ usePermission.js				// 登录鉴权hook
 ├─ index.html

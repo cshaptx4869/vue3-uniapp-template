@@ -24,12 +24,12 @@
       </template>
     </view>
     <!-- 扫码组件 -->
-    <ScanCode
+    <cshaptx4869-scancode
       v-if="h5ScanCode"
       @success="handleScanSuccess"
       @fail="handleScanFail"
       @close="h5ScanCode = false"
-    ></ScanCode>
+    ></cshaptx4869-scancode>
   </view>
 </template>
 
