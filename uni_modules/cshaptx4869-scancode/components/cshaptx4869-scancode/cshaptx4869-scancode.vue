@@ -1,5 +1,5 @@
 <template>
-  <div ref="scancodeRef" class="cshaptx4869-scancode">
+  <div class="cshaptx4869-scancode">
     <qrcode-stream
       :formats="scanType"
       :paused="paused"
@@ -130,7 +130,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, onUnmounted } from "vue";
 import { QrcodeStream } from "vue-qrcode-reader";
 
 const props = defineProps({
@@ -176,7 +176,6 @@ const props = defineProps({
 });
 const emit = defineEmits(["success", "fail", "close"]);
 
-const scancodeRef = ref();
 const isReady = ref(false);
 const codes = ref([]);
 const paused = ref(false);
@@ -204,7 +203,7 @@ const deviceIndex = ref(0);
 const deviceKey = ref("label");
 
 onMounted(async () => {
-  props.fullScreen && fullScreen(scancodeRef.value);
+  props.fullScreen && requestFullscreen();
   const videoDevices = (await navigator.mediaDevices.enumerateDevices()).filter(
     ({ kind }) => kind === "videoinput"
   );
@@ -217,6 +216,9 @@ onMounted(async () => {
     }
     devices.value = videoDevices;
   }
+});
+onUnmounted(() => {
+  props.fullScreen && fullscreenElement() && exitFullscreen();
 });
 
 function handleCameraChange(event) {
@@ -294,7 +296,7 @@ function onError(err) {
 }
 
 // 全屏
-function fullScreen(el) {
+function requestFullscreen(el) {
   el = el ?? document.documentElement;
   const requestMethod = [
     "requestFullscreen",
@@ -307,6 +309,30 @@ function fullScreen(el) {
     "oRequestFullscreen",
   ].find((m) => el && m in el);
   requestMethod && el[requestMethod]();
+}
+
+function exitFullscreen() {
+  const exitMethod = [
+    "exitFullscreen",
+    "webkitExitFullscreen",
+    "webkitExitFullScreen",
+    "webkitCancelFullScreen",
+    "mozCancelFullScreen",
+    "msExitFullscreen",
+    "oCancelFullScreen",
+  ].find((m) => document && m in document);
+  exitMethod && document[exitMethod]();
+}
+
+function fullscreenElement() {
+  const fullscreenElementProp = [
+    "fullscreenElement",
+    "webkitFullscreenElement",
+    "mozFullScreenElement",
+    "msFullscreenElement",
+  ].find((m) => document && m in document);
+
+  return fullscreenElementProp ? document[fullscreenElementProp] : null;
 }
 </script>
 

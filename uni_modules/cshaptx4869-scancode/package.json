@@ -1,7 +1,7 @@
 {
   "id": "cshaptx4869-scancode",
   "displayName": "H5扫码",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "可看做是H5端的 uni.scanCode(OBJECT) 接口",
   "keywords": [
     "h5扫码",
@@ -9,7 +9,7 @@
     "闪光灯",
     "摄像头",
     "扫一扫"
-  ],
+],
   "repository": "",
   "engines": {
     "HBuilderX": "^3.1.0"
