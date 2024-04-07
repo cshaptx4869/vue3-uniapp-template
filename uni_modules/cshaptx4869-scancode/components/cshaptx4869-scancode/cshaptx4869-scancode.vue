@@ -1,5 +1,5 @@
 <template>
-  <div class="cshaptx4869-scancode">
+  <div ref="scancodeRef" class="cshaptx4869-scancode">
     <qrcode-stream
       :formats="scanType"
       :paused="paused"
@@ -121,8 +121,8 @@
         </template>
       </template>
       <template v-else>
-        <div class="loading">
-          <div class="circle"></div>
+        <div class="load-container">
+          <div class="box-loading"></div>
         </div>
       </template>
     </qrcode-stream>
@@ -169,9 +169,14 @@ const props = defineProps({
     type: String,
     default: "#007bff",
   },
+  fullScreen: {
+    type: Boolean,
+    default: true,
+  },
 });
 const emit = defineEmits(["success", "fail", "close"]);
 
+const scancodeRef = ref();
 const isReady = ref(false);
 const codes = ref([]);
 const paused = ref(false);
@@ -199,6 +204,7 @@ const deviceIndex = ref(0);
 const deviceKey = ref("label");
 
 onMounted(async () => {
+  props.fullScreen && fullScreen(scancodeRef.value);
   const videoDevices = (await navigator.mediaDevices.enumerateDevices()).filter(
     ({ kind }) => kind === "videoinput"
   );
@@ -286,6 +292,22 @@ function onError(err) {
 
   emit("fail", { errName, errMsg });
 }
+
+// 全屏
+function fullScreen(el) {
+  el = el ?? document.documentElement;
+  const requestMethod = [
+    "requestFullscreen",
+    "webkitRequestFullscreen",
+    "webkitRequestFullScreen",
+    "webkitEnterFullscreen",
+    "webkitEnterFullScreen",
+    "mozRequestFullScreen",
+    "msRequestFullscreen",
+    "oRequestFullscreen",
+  ].find((m) => el && m in el);
+  requestMethod && el[requestMethod]();
+}
 </script>
 
 <style lang="scss" scoped>
@@ -301,12 +323,14 @@ function onError(err) {
     position: absolute;
     top: 40rpx;
     left: 30rpx;
+    z-index: 99;
   }
 
   .camera {
     position: absolute;
     top: 40rpx;
     right: 30rpx;
+    z-index: 99;
   }
 
   .flashlight {
@@ -318,83 +342,91 @@ function onError(err) {
   }
 
   .scanline {
-    position: absolute;
-    top: 20%;
-    left: 50%;
-    transform: translate(-50%);
-    width: 80%;
-    height: 2rpx;
-    background: linear-gradient(180deg, rgba(0, 255, 51, 0) 50%, #06ae57 300%);
-    border-bottom: 2px solid #06ae57;
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(180deg, rgba(0, 255, 51, 0) 43%, #06ae57 211%);
     animation: scan 2s linear infinite;
   }
 
   @keyframes scan {
     0% {
-      top: 20%;
+      transform: translateY(-100%);
     }
 
     100% {
-      top: 80%;
-      opacity: 0;
+      transform: translateY(0);
     }
   }
 
-  .loading {
+  .load-container {
+    position: relative;
+    width: 100%;
     height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    // background: rgba(0, 0, 0, 0.5);
-    background-color: #808080;
+    background-color: #fff;
 
-    .circle {
-      position: relative;
-      width: 400rpx;
-      height: 400rpx;
-      border-radius: 50%;
-      transform: rotate(360deg);
-      animation: rotate 45s infinite linear;
-    }
-
-    .circle::before {
+    .box-loading {
+      width: 100rpx;
+      height: 100rpx;
+      margin: auto;
       position: absolute;
-      content: "";
-      top: 0;
       left: 0;
       right: 0;
+      top: 0;
       bottom: 0;
-      box-sizing: border-box;
-      border-radius: 50%;
-      border-top: 6rpx solid #fff;
-      border-left: 6rpx solid #fff;
-      border-bottom: 6rpx solid transparent;
-      border-right: 6rpx solid transparent;
-      transform: rotate(720deg);
-      animation: rotate 3s infinite ease-out;
-    }
 
-    .circle::after {
-      position: absolute;
-      content: "";
-      top: -4rpx;
-      left: -4rpx;
-      right: -4px;
-      bottom: -4px;
-      box-sizing: border-box;
-      border-radius: 50%;
-      border-bottom: 14rpx solid transparent;
-      border-right: 14rpx solid transparent;
-      border-top: 14rpx solid #06ae57;
-      border-left: 14rpx solid #06ae57;
-      transform: rotate(720deg);
-      animation: rotate 3s infinite ease-in-out;
-    }
-
-    @keyframes rotate {
-      100% {
-        transform: rotate(0deg);
+      &:before {
+        content: "";
+        width: 100rpx;
+        height: 10rpx;
+        background: #000;
+        opacity: 0.1;
+        position: absolute;
+        top: 118rpx;
+        left: 0;
+        border-radius: 50%;
+        animation: shadow 0.5s linear infinite;
       }
+
+      &:after {
+        content: "";
+        width: 100rpx;
+        height: 100rpx;
+        background: #06ae57;
+        animation: animate 0.5s linear infinite;
+        position: absolute;
+        top: 0;
+        left: 0;
+        border-radius: 6rpx;
+      }
+    }
+  }
+
+  @keyframes animate {
+    17% {
+      border-bottom-right-radius: 6rpx;
+    }
+    25% {
+      transform: translateY(18rpx) rotate(22.5deg);
+    }
+    50% {
+      transform: translateY(36rpx) scale(1, 0.9) rotate(45deg);
+      border-bottom-right-radius: 80rpx;
+    }
+    75% {
+      transform: translateY(18rpx) rotate(67.5deg);
+    }
+    100% {
+      transform: translateY(0) rotate(90deg);
+    }
+  }
+
+  @keyframes shadow {
+    0%,
+    100% {
+      transform: scale(1, 1);
+    }
+    50% {
+      transform: scale(1.2, 1);
     }
   }
 }
