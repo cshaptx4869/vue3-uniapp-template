@@ -17,10 +17,18 @@ function setupInterceptor() {
   const CODE_ACCESS_TOKEN = 4003;
   const CODE_REFRESH_TOKEN = 4004;
 
+  // H5开发环境做跨域处理
+  let baseURL = import.meta.env.VITE_BASE_URL;
+  // #ifdef H5
+  if (import.meta.env.DEV) {
+    baseURL = import.meta.env.VITE_BASE_API;
+  }
+  // #endif
+
   // 初始化请求配置
   http.setConfig((config) => {
     // 域名设置
-    config.baseURL = import.meta.env.VITE_BASE_URL;
+    config.baseURL = baseURL;
     // 全局header
     config.header = {};
     config.method = "GET";
