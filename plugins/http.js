@@ -65,12 +65,12 @@ function setupInterceptor() {
     config.firstIpv4 = false;
     // #endif
     // 局部优先级高于全局，返回当前请求的task,options。请勿在此处修改options。非必填
-    // getTask: (task, options) => {
-    // 相当于设置了请求超时时间500ms
+    // config.getTask = (task, options) => {
+    //   // 相当于设置了请求超时时间500ms
     //   setTimeout(() => {
-    //     task.abort()
-    //   }, 500)
-    // },
+    //     task.abort();
+    //   }, 500);
+    // };
     // 全局自定义验证器。参数为statusCode 且必存在，不用判断空情况。
     config.validateStatus = (statusCode) => {
       // 若返回false 走响应拦截的错误回调
@@ -80,24 +80,29 @@ function setupInterceptor() {
   });
 
   // 请求拦截部分，如配置，每次请求前都会执行
-  http.interceptors.request.use((config) => {
-    // loading
-    if (config.custom.loading) {
-      uni.showLoading({
-        title: config.custom.loadingText ?? "正在加载",
-        mask: config.custom.loadingMask ?? true,
-      });
-    }
+  http.interceptors.request.use(
+    (config) => {
+      // loading
+      if (config.custom.loading) {
+        uni.showLoading({
+          title: config.custom.loadingText ?? "正在加载",
+          mask: config.custom.loadingMask ?? true,
+        });
+      }
 
-    // 引用token
-    if (config.custom.auth) {
-      config.header[HEADER_ACCESS_TOKEN] = authStore.accessToken;
-    }
+      // 引用token
+      if (config.custom.auth) {
+        config.header[HEADER_ACCESS_TOKEN] = authStore.accessToken;
+      }
 
-    // 最后需要将config进行return
-    // 如果return一个false值，则会取消本次请求
-    return config;
-  });
+      // 最后需要将config进行return
+      // 如果return Promise.reject(config)，则会取消本次请求
+      return config;
+    },
+    (config) => {
+      return Promise.reject(config);
+    }
+  );
 
   // 响应拦截，如配置，每次请求结束都会执行本方法
   http.interceptors.response.use(
