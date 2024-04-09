@@ -3,7 +3,6 @@
     <uv-navbar leftIconSize="40rpx" @leftClick="handleBack"></uv-navbar>
     <uv-empty
       mode="page"
-      marginTop="50%"
       textSize="28"
       text="Page Not Found"
       icon="/static/404.png"
@@ -26,5 +25,9 @@ function handleBack() {
 .not-found {
   height: 100%;
   overflow: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 </style>
