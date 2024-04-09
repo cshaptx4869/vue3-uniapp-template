@@ -1,5 +1,6 @@
 import * as api from "@/api";
 import { useAuthStore } from "@/store";
+import { i18n } from "@/plugins/i18n";
 
 /* 拦截器 */
 function setupInterceptor() {
@@ -12,6 +13,7 @@ function setupInterceptor() {
   // 请求头
   const HEADER_ACCESS_TOKEN = "Authorization";
   const HEADER_REFRESH_TOKEN = "Pass";
+  const HEADER_I18N = "I18n";
   // code值
   const CODE_SUCCESS = 200;
   const CODE_ACCESS_TOKEN = 4003;
@@ -89,6 +91,9 @@ function setupInterceptor() {
           mask: config.custom.loadingMask ?? true,
         });
       }
+
+      // 国际化标识
+      config.header[HEADER_I18N] = i18n.global.locale.value;
 
       // 引用token
       if (config.custom.auth) {
