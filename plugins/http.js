@@ -10,6 +10,8 @@ function setupInterceptor() {
   let requests = [];
   // 是否正在刷新token的标记
   let isRefreshing = false;
+  // token认证的方式
+  const TOKEN_SCHEMA = "Bearer ";
   // 请求头
   const HEADER_ACCESS_TOKEN = "Authorization";
   const HEADER_REFRESH_TOKEN = "Pass";
@@ -97,7 +99,8 @@ function setupInterceptor() {
 
       // 引用token
       if (config.custom.auth) {
-        config.header[HEADER_ACCESS_TOKEN] = authStore.accessToken;
+        config.header[HEADER_ACCESS_TOKEN] =
+          TOKEN_SCHEMA + authStore.accessToken;
       }
 
       // 最后需要将config进行return
@@ -134,7 +137,7 @@ function setupInterceptor() {
             isRefreshing = true;
             authStore
               .refresh({
-                [HEADER_REFRESH_TOKEN]: authStore.refreshToken,
+                [HEADER_REFRESH_TOKEN]: TOKEN_SCHEMA + authStore.refreshToken,
               })
               .then(() => {
                 requests.forEach((request) => request());
