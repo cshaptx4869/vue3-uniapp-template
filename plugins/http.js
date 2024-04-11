@@ -158,11 +158,10 @@ function setupInterceptor() {
       } else if (result.code == CODE_REFRESH_TOKEN) {
         //长token失效
         return Promise.reject(response);
-      } else {
-        uni.$uv.toast(result.msg);
       }
 
-      return false;
+      uni.$uv.toast(result.msg);
+      return Promise.reject(response);
     },
     (response) => {
       /*  对响应错误做点什么 */
