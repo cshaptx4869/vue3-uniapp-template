@@ -1,18 +1,17 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 import { cache } from "@/utils/cache";
-import { signUpApi, signInApi, refreshApi } from "@/api/modules/auth";
-
-const ACCESS_TOKEN = "accessToken";
-const REFRESH_TOKEN = "refreshToken";
 
 export const useAuthStore = defineStore("auth", () => {
+  const ACCESS_TOKEN = "accessToken";
+  const REFRESH_TOKEN = "refreshToken";
+
   const accessToken = ref(cache(ACCESS_TOKEN) ?? "");
   const refreshToken = ref(cache(REFRESH_TOKEN) ?? "");
 
   // 注册
   async function signUp(payload) {
-    const response = await signUpApi(payload);
+    const response = await uni.$api.auth.signUpApi(payload);
     cache(ACCESS_TOKEN, response.accessToken);
     cache(REFRESH_TOKEN, response.refreshToken);
     accessToken.value = response.accessToken;
@@ -22,7 +21,7 @@ export const useAuthStore = defineStore("auth", () => {
 
   // 登录
   async function signIn(payload) {
-    const response = await signInApi(payload);
+    const response = await uni.$api.auth.signInApi(payload);
     cache(ACCESS_TOKEN, response.accessToken);
     cache(REFRESH_TOKEN, response.refreshToken);
     accessToken.value = response.accessToken;
@@ -32,7 +31,7 @@ export const useAuthStore = defineStore("auth", () => {
 
   // 刷新token
   async function refresh(payload) {
-    const response = await refreshApi(payload);
+    const response = await uni.$api.auth.refreshApi(payload);
     cache(ACCESS_TOKEN, response.accessToken);
     accessToken.value = response.accessToken;
 

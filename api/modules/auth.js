@@ -1,6 +1,8 @@
+const http = uni.$uv.http;
+
 // 注册
 export function signUpApi(data) {
-  return uni.$uv.http.post("/auth/signup", data, {
+  return http.post("/auth/signup", data, {
     custom: {
       loading: true,
     },
@@ -9,7 +11,7 @@ export function signUpApi(data) {
 
 // 登录
 export function signInApi(data) {
-  return uni.$uv.http.post("/auth/signin", data, {
+  return http.post("/auth/signin", data, {
     custom: {
       loading: true,
     },
@@ -18,7 +20,7 @@ export function signInApi(data) {
 
 // 刷新token
 export function refreshApi(header = {}) {
-  return uni.$uv.http.post("/auth/refresh", undefined, {
+  return http.post("/auth/refresh", undefined, {
     header,
   });
 }
