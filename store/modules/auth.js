@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 import { cache } from "@/utils/cache";
+import { store } from "@/plugins/store";
 
 export const useAuthStore = defineStore("auth", () => {
   const ACCESS_TOKEN = "accessToken";
@@ -55,3 +56,9 @@ export const useAuthStore = defineStore("auth", () => {
     refresh,
   };
 });
+
+// 手动提供给 useStore() 函数 pinia 实例
+// https://pinia.vuejs.org/zh/core-concepts/outside-component-usage.html#using-a-store-outside-of-a-component
+export function useAuthStoreHook() {
+  return useAuthStore(store);
+}
