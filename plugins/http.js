@@ -1,10 +1,14 @@
 import * as api from "@/api";
-import { useAuthStore } from "@/store";
+import { useAuthStore } from "@/store/modules/auth";
 import { i18n } from "@/plugins/i18n";
+
+function setupApi(app) {
+  uni.$api = api;
+  app.config.globalProperties.$api = api;
+}
 
 /* 拦截器 */
 function setupInterceptor() {
-  const http = uni.$uv.http;
   const authStore = useAuthStore();
   // 请求重试队列，每一项将是一个待执行的函数形式
   let requests = [];
@@ -30,7 +34,7 @@ function setupInterceptor() {
   // #endif
 
   // 初始化请求配置
-  http.setConfig((config) => {
+  uni.$uv.http.setConfig((config) => {
     // 域名设置
     config.baseURL = baseURL;
     // 全局header
@@ -84,7 +88,7 @@ function setupInterceptor() {
   });
 
   // 请求拦截部分，如配置，每次请求前都会执行
-  http.interceptors.request.use(
+  uni.$uv.http.interceptors.request.use(
     (config) => {
       // loading
       if (config.custom.loading) {
@@ -113,7 +117,7 @@ function setupInterceptor() {
   );
 
   // 响应拦截，如配置，每次请求结束都会执行本方法
-  http.interceptors.response.use(
+  uni.$uv.http.interceptors.response.use(
     (response) => {
       /* 对响应成功做点什么 可使用async await 做异步操作*/
 
@@ -131,7 +135,7 @@ function setupInterceptor() {
         // 短token失效
         return new Promise((resolve, reject) => {
           // 将resolve放进重试队列，用一个函数形式来保存，等token刷新后直接执行
-          requests.push(() => resolve(http.request(response.config)));
+          requests.push(() => resolve(uni.$uv.http.request(response.config)));
           // 刷新短token
           if (!isRefreshing) {
             isRefreshing = true;
@@ -177,7 +181,6 @@ function setupInterceptor() {
 }
 
 export function setupHttp(app) {
-  uni.$api = api;
-  app.config.globalProperties.$api = api;
+  setupApi(app);
   setupInterceptor();
 }

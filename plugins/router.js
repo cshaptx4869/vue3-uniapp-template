@@ -1,4 +1,4 @@
-import { useAuthStore } from "@/store";
+import { useAuthStore } from "@/store/modules/auth";
 import { routes } from "@/utils/parseRoutes";
 
 function hasPermission(url = "") {

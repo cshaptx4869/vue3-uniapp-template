@@ -1,4 +1,4 @@
-import { useAuthStore } from "@/store";
+import { useAuthStore } from "@/store/modules/auth";
 import { onShow } from "@dcloudio/uni-app";
 
 // 对某些特殊场景需要在页面onShow生命周期中校验权限
