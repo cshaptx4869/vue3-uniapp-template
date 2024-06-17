@@ -9,7 +9,7 @@
     </view>
 
     <view>
-      <uv-button type="info" text="请求数据" @click="handleRequest"></uv-button>
+      <uv-button type="info" text="webview" @click="handleWebview"></uv-button>
       <LangSelect>
         <uv-button type="primary" text="切换语言"></uv-button>
       </LangSelect>
@@ -19,6 +19,7 @@
         @click="handleScanCode"
       ></uv-button>
       <uv-button type="warning" text="路由跳转" @click="handleJump"></uv-button>
+      <uv-button type="info" text="请求数据" @click="handleRequest"></uv-button>
       <template v-if="authStore.refreshToken">
         <uv-button type="error" text="注销" @click="handleLogout"></uv-button>
       </template>
@@ -45,6 +46,13 @@ function handleRequest() {
   uni.$api.user.getUserList().then((res) => {
     console.log("获取用户数据", res);
     userList.value = res;
+  });
+}
+
+// webview
+function handleWebview() {
+  uni.$uv.route("/pages/webview/webview", {
+    url: "https://www.baidu.com",
   });
 }
 
