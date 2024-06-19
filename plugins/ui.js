@@ -24,3 +24,5 @@ export function setupUI(app) {
     },
   });
 }
+
+export const $uv = uni.$uv;

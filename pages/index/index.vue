@@ -39,11 +39,12 @@
 <script setup>
 import { ref } from "vue";
 import { useAuthStore } from "@/store";
+import { UserAPI } from "@/api";
 
 // 请求数据
 const userList = ref([]);
 function handleRequest() {
-  uni.$api.user.getUserList().then((res) => {
+  UserAPI.getUserList().then((res) => {
     console.log("获取用户数据", res);
     userList.value = res;
   });

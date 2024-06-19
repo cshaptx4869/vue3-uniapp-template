@@ -1,4 +1,4 @@
-import * as auth from "./modules/auth";
-import * as user from "./modules/user";
+import AuthAPI from "./modules/auth";
+import UserAPI from "./modules/user";
 
-export { auth, user };
+export { AuthAPI, UserAPI };

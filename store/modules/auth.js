@@ -1,7 +1,8 @@
+import AuthAPI from "@/api/modules/auth";
+import { store } from "@/store";
+import { cache } from "@/utils/cache";
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import { cache } from "@/utils/cache";
-import { store } from "@/plugins/store";
 
 export const useAuthStore = defineStore("auth", () => {
   const ACCESS_TOKEN = "accessToken";
@@ -12,7 +13,7 @@ export const useAuthStore = defineStore("auth", () => {
 
   // 注册
   async function signUp(payload) {
-    const response = await uni.$api.auth.signUpApi(payload);
+    const response = await AuthAPI.signUp(payload);
     cache(ACCESS_TOKEN, response.accessToken);
     cache(REFRESH_TOKEN, response.refreshToken);
     accessToken.value = response.accessToken;
@@ -22,7 +23,7 @@ export const useAuthStore = defineStore("auth", () => {
 
   // 登录
   async function signIn(payload) {
-    const response = await uni.$api.auth.signInApi(payload);
+    const response = await AuthAPI.signIn(payload);
     cache(ACCESS_TOKEN, response.accessToken);
     cache(REFRESH_TOKEN, response.refreshToken);
     accessToken.value = response.accessToken;
@@ -32,7 +33,7 @@ export const useAuthStore = defineStore("auth", () => {
 
   // 刷新token
   async function refresh(payload) {
-    const response = await uni.$api.auth.refreshApi(payload);
+    const response = await AuthAPI.refresh(payload);
     cache(ACCESS_TOKEN, response.accessToken);
     accessToken.value = response.accessToken;
 

@@ -1,26 +1,30 @@
-const http = uni.$uv.http;
+import http from "@/utils/request";
 
-// 注册
-export function signUpApi(data) {
-  return http.post("/auth/signup", data, {
-    custom: {
-      loading: true,
-    },
-  });
+class AuthAPI {
+  // 注册
+  static signUp(data) {
+    return http.post("/auth/signup", data, {
+      custom: {
+        loading: true,
+      },
+    });
+  }
+
+  // 登录
+  static signIn(data) {
+    return http.post("/auth/signin", data, {
+      custom: {
+        loading: true,
+      },
+    });
+  }
+
+  // 刷新token
+  static refresh(header = {}) {
+    return http.post("/auth/refresh", undefined, {
+      header,
+    });
+  }
 }
 
-// 登录
-export function signInApi(data) {
-  return http.post("/auth/signin", data, {
-    custom: {
-      loading: true,
-    },
-  });
-}
-
-// 刷新token
-export function refreshApi(header = {}) {
-  return http.post("/auth/refresh", undefined, {
-    header,
-  });
-}
+export default AuthAPI;
