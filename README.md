@@ -6,8 +6,6 @@ vue3-uniapp-template 是基于 vue3 的 uniapp 快速开发模板，包含状态
 
 主要使用的技术栈：[uniapp](https://uniapp.dcloud.net.cn/)、[vue3](https://cn.vuejs.org/)、[pinia](https://pinia.vuejs.org/zh/)、[vite](https://cn.vitejs.dev/)、[vue-i18n](https://kazupon.github.io/vue-i18n/)、[uv-ui](https://www.uvui.cn/) 。
 
-
-
 ### 项目启动
 
 ```bash
@@ -26,36 +24,35 @@ pnpm install
 # 启动HBuilderX运行项目
 ```
 
-
-
 ## 效果预览
-<img src="https://img2024.cnblogs.com/blog/1215492/202404/1215492-20240401100307219-1481721467.png" style="zoom: 50%;" />
 
-
+![](https://img2024.cnblogs.com/blog/1215492/202406/1215492-20240619105421286-644941330.png)
 
 ## 目录结构
+
 ```
 vue3-uniapp-template
 ├─ .editorconfig
 ├─ .env.development					// 运行环境变量
 ├─ .env.production					// 发行环境变量
+├─ .gitignor
 ├─ .prettierignore
-├─ api								// 接口管理
+├─ api								      // api管理
 │  ├─ index.js
-│  └─ modules						// 接口模块化
+│  └─ modules						    // api模块化
 │     ├─ auth.js
 │     └─ user.js
 ├─ App.vue
 ├─ commitlint.config.js
-├─ components						// 项目组件库
-│  ├─ LangSelect					// 语言切换组件
+├─ components						    // 项目组件库
+│  ├─ LangSelect					  // 语言切换组件
 │  │  └─ LangSelect.vue
-├─ hooks							// hooks管理
-│  └─ usePermission.js				// 登录鉴权hook
+├─ hooks							      // hooks管理
+│  └─ usePermission.js			// 登录鉴权hook
 ├─ index.html
 ├─ LICENSE
 ├─ lint-staged.config.js
-├─ locale							// 国际化管理
+├─ locale							      // 国际化管理
 │  ├─ en.json
 │  ├─ index.js
 │  ├─ ja.json
@@ -65,38 +62,39 @@ vue3-uniapp-template
 ├─ main.js
 ├─ manifest.json
 ├─ package.json
-├─ pages							// 页面管理
+├─ pages							      // 页面管理
+│  ├─ 404
+│  │  └─ 404.vue
 │  ├─ index
 │  │  └─ index.vue
-│  └─ login
-│     └─ login.vue
-├─ pages.json						// 页面路由
-├─ pagesA							// 分包A页面管理
+│  ├─ login
+│  │  └─ login.vue
+│  └─ webview
+│     └─ webview.vue
+├─ pages.json						    // 页面路由
+├─ pagesA							      // 分包A页面管理
 │  └─ test
 │     └─ test.vue
-├─ plugins							// 插件管理
-│  ├─ http.js						// 请求响应拦截
-│  ├─ i18n.js						// 国际化
+├─ plugins							    // 插件管理
 │  ├─ index.js
-│  ├─ router.js						// 路由拦截
-│  ├─ store.js						// 状态管理
-│  └─ ui.js							// UI扩展配置
+│  ├─ permission.js					// 路由拦截
+│  └─ ui.js							    // UV-UI扩展配置
 ├─ prettier.config.js
 ├─ README.md
-├─ static							// 静态资源管理
+├─ static							      // 静态资源管理
+│  ├─ 404.png
 │  └─ logo.png
-├─ store							// store管理
+├─ store							      // store管理
 │  ├─ index.js
-│  └─ modules						// store模块化
+│  └─ modules						    // store模块化
 │     ├─ auth.js
 │     └─ user.js
 ├─ uni.scss
-├─ utils							// 工具管理
-│  └─ cache.js						// 缓存管理工具
+├─ utils                    // 工具管理
+│  ├─ cache.js              // 缓存
+│  └─ request.js            // 网络请求
 └─ vite.config.js
 ```
-
-
 
 ### 注意事项
 
