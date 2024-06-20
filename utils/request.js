@@ -6,7 +6,7 @@ import MD5 from "crypto-js/md5";
 
 // 接口签名
 const API_SAFE = true;
-const SIGN_KEY = "8oJliIOB2gKLFHec0jmM7Z5S9Y4UdQnP";
+const API_KEY = "8oJliIOB2gKLFHec0jmM7Z5S9Y4UdQnP";
 // token认证的方式
 const TOKEN_SCHEMA = "Bearer ";
 // 请求头
@@ -103,10 +103,14 @@ $uv.http.interceptors.request.use(
 
     // 生成接口签名
     if (API_SAFE) {
-      config.params.timestamp = Date.now();
+      // nonce参数用于防止重发攻击
       config.params.nonce = $uv.guid(16);
-      let signStr = "";
+      // timestamp参数用于解决nonce随请求次数无限增多的问题
+      config.params.timestamp = Date.now();
+      // 将所有请求参数按照字典排序
       const signParams = ksort($uv.deepMerge(config.data, config.params));
+      // 将排序后的参数数组按照 key1=val1&key2=val2 的形式组成字符串，将字符串与API_KEY连接，用md5加密一次(32位小写)，得到sign
+      let signStr = "";
       for (const key in signParams) {
         signStr += `${key}=${
           typeof signParams[key] === "object"
@@ -114,9 +118,9 @@ $uv.http.interceptors.request.use(
             : signParams[key]
         }&`;
       }
-      signStr += SIGN_KEY;
-      // console.log(signStr);
+      signStr += API_KEY;
       config.header[HEADER_SIGN] = MD5(signStr).toString();
+      // console.log(signStr);
     }
 
     // 国际化标识
