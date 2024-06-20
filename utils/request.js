@@ -1,6 +1,7 @@
 import { i18n } from "@/locale";
 import { $uv } from "@/plugins/ui";
 import { useAuthStore } from "@/store/modules/auth";
+import { currentRoute } from "@/utils";
 
 // token认证的方式
 const TOKEN_SCHEMA = "Bearer ";
@@ -141,9 +142,12 @@ $uv.http.interceptors.response.use(
             .catch(() => {
               // 捕获长token失效的reject
               authStore.signOut();
-              uni.$uv.route({
+              $uv.route({
                 type: "redirectTo",
                 url: "/pages/login/login",
+                params: {
+                  redirect: encodeURIComponent(currentRoute()),
+                },
               });
             })
             .finally(() => {
@@ -157,7 +161,7 @@ $uv.http.interceptors.response.use(
       return Promise.reject(response);
     }
 
-    uni.$uv.toast(result.msg);
+    $uv.toast(result.msg);
     return Promise.reject(response);
   },
   (response) => {
@@ -167,7 +171,7 @@ $uv.http.interceptors.response.use(
       500: "服务器内部错误，无法完成请求",
     };
     let errorMessage = codeMessage[response.statusCode] ?? response.errMsg;
-    uni.$uv.toast(errorMessage);
+    $uv.toast(errorMessage);
     return Promise.reject(response);
   }
 );
