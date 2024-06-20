@@ -1,14 +1,19 @@
 import { i18n } from "@/locale";
 import { $uv } from "@/plugins/ui";
 import { useAuthStore } from "@/store/modules/auth";
-import { currentRoute } from "@/utils";
+import { currentRoute, ksort } from "@/utils";
+import MD5 from "crypto-js/md5";
 
+// 接口签名
+const API_SAFE = true;
+const SIGN_KEY = "8oJliIOB2gKLFHec0jmM7Z5S9Y4UdQnP";
 // token认证的方式
 const TOKEN_SCHEMA = "Bearer ";
 // 请求头
 const HEADER_ACCESS_TOKEN = "Authorization";
 const HEADER_REFRESH_TOKEN = "Pass";
 const HEADER_I18N = "I18n";
+const HEADER_SIGN = "Sign";
 // code值
 const CODE_SUCCESS = 200;
 const CODE_ACCESS_TOKEN = 4003;
@@ -90,14 +95,32 @@ $uv.http.interceptors.request.use(
       });
     }
 
-    // 国际化标识
-    config.header[HEADER_I18N] = i18n.global.locale.value;
-
     // 引用token
     if (config.custom.auth) {
       const authStore = useAuthStore();
       config.header[HEADER_ACCESS_TOKEN] = TOKEN_SCHEMA + authStore.accessToken;
     }
+
+    // 生成接口签名
+    if (API_SAFE) {
+      config.params.timestamp = Date.now();
+      config.params.nonce = $uv.guid(16);
+      let signStr = "";
+      const signParams = ksort($uv.deepMerge(config.data, config.params));
+      for (const key in signParams) {
+        signStr += `${key}=${
+          typeof signParams[key] === "object"
+            ? JSON.stringify(signParams[key])
+            : signParams[key]
+        }&`;
+      }
+      signStr += SIGN_KEY;
+      // console.log(signStr);
+      config.header[HEADER_SIGN] = MD5(signStr).toString();
+    }
+
+    // 国际化标识
+    config.header[HEADER_I18N] = i18n.global.locale.value;
 
     // 最后需要将config进行return
     // 如果return Promise.reject(config)，则会取消本次请求

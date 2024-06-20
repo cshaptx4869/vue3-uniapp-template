@@ -139,3 +139,17 @@ export function currentRoute() {
   const currentPage = pages[pages.length - 1];
   return currentPage?.$page?.fullPath || currentPage.route;
 }
+
+/**
+ * 对象属性按字典排序
+ * @param {Object} obj
+ * @returns
+ */
+export function ksort(obj = {}) {
+  const keys = Object.keys(obj).sort();
+  const newObj = {};
+  keys.forEach((key) => {
+    newObj[key] = obj[key];
+  });
+  return newObj;
+}

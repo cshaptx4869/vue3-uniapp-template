@@ -22,6 +22,7 @@
   "author": "cshaptx4869",
   "license": "MIT",
   "dependencies": {
+    "crypto-js": "^4.2.0",
     "vue-qrcode-reader": "^5.5.3"
   },
   "devDependencies": {
