@@ -2,7 +2,7 @@
 
 ### 简介
 
-vue3-uniapp-template 是基于 vue3 的 uniapp 快速开发模板，包含状态管理、网络请求、路由拦截、UI组件、国际化、Token无感刷新等常用功能。
+vue3-uniapp-template 是基于 vue3 的 uniapp 快速开发模板，包含状态管理、网络请求、路由拦截、UI组件、国际化、Token无感刷新、接口签名等常用功能。
 
 主要使用的技术栈：[uniapp](https://uniapp.dcloud.net.cn/)、[vue3](https://cn.vuejs.org/)、[pinia](https://pinia.vuejs.org/zh/)、[vite](https://cn.vitejs.dev/)、[vue-i18n](https://kazupon.github.io/vue-i18n/)、[uv-ui](https://www.uvui.cn/) 。
 
@@ -26,7 +26,7 @@ pnpm install
 
 ## 效果预览
 
-![](https://img2024.cnblogs.com/blog/1215492/202406/1215492-20240619105421286-644941330.png)
+![](https://github.com/cshaptx4869/vue3-uniapp-template/assets/31907940/e9cade4a-ffa6-44a9-b688-de08f2eb5d60)
 
 ## 目录结构
 
@@ -114,3 +114,5 @@ vue3-uniapp-template
 - Web端发行时慎选树摇优化，会有奇葩的问题...
 
 ![](https://img2024.cnblogs.com/blog/1215492/202404/1215492-20240401220614263-1710809111.png)
+
+- 其他 HBuilderX 插件推荐：[eslint-plugin-vue](https://ext.dcloud.net.cn/plugin?id=2005)、[eslint-js](https://ext.dcloud.net.cn/plugin?id=2037)
