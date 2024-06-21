@@ -14,25 +14,19 @@
         <uv-button type="primary" text="切换语言"></uv-button>
       </LangSelect>
       <uv-button
-        type="success"
-        text="扫一扫"
-        @click="handleScanCode"
+        type="warning"
+        text="路由跳转(拦截)"
+        @click="handleJump"
       ></uv-button>
-      <uv-button type="warning" text="路由跳转" @click="handleJump"></uv-button>
-      <uv-button type="info" text="请求数据" @click="handleRequest"></uv-button>
+      <uv-button
+        type="success"
+        text="请求数据"
+        @click="handleRequest"
+      ></uv-button>
       <template v-if="authStore.refreshToken">
         <uv-button type="error" text="注销" @click="handleLogout"></uv-button>
       </template>
     </view>
-    <!-- 扫码组件 -->
-    <!-- #ifdef H5 -->
-    <cshaptx4869-scancode
-      v-if="h5ScanCode"
-      @success="handleScanSuccess"
-      @fail="handleScanFail"
-      @close="h5ScanCode = false"
-    ></cshaptx4869-scancode>
-    <!-- #endif -->
   </view>
 </template>
 
@@ -66,43 +60,6 @@ function handleJump() {
 const authStore = useAuthStore();
 function handleLogout() {
   authStore.signOut();
-}
-
-// 扫一扫
-const h5ScanCode = ref(false);
-function handleScanCode() {
-  // #ifdef H5
-  h5ScanCode.value = true;
-  // #endif
-  // #ifndef H5
-  uni.scanCode({
-    success: (res) => {
-      uni.showToast({
-        icon: "none",
-        title: res.result,
-      });
-    },
-    faile: (err) => {
-      console.log("err", err);
-    },
-  });
-  // #endif
-}
-function handleScanSuccess(res) {
-  h5ScanCode.value = false;
-  uni.showToast({
-    icon: "none",
-    title: res,
-  });
-}
-function handleScanFail(err) {
-  uni.showModal({
-    title: err.errName,
-    content: err.errMsg,
-    complete: () => {
-      h5ScanCode.value = false;
-    },
-  });
 }
 </script>
 

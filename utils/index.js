@@ -44,26 +44,24 @@ export function navigationBarHeight() {
  * @returns
  */
 export function parseURLSearchParams(url = "") {
-  const obj = {};
+  const params = {};
+  url = decodeURIComponent(url);
   if (url.includes("?")) {
-    const urlArr = url.split("?")[1].split("&");
-    if (urlArr.length) {
-      urlArr.forEach((item) => {
-        const key = decodeURI(item.split("=")[0]);
-        const value = decodeURI(item.split("=")[1]);
-        if (key in obj) {
-          //key重复时，合并value
-          const arr = [];
-          arr.push(...obj[key]);
-          arr.push(value);
-          obj[key] = value;
+    const pairs = url.split("?")[1].split("&");
+    pairs.forEach((item) => {
+      const [key, value] = item.split("=");
+      if (params.hasOwnProperty(key)) {
+        if (Array.isArray(params[key])) {
+          params[key].push(value);
         } else {
-          obj[key] = value;
+          params[key] = [params[key], value];
         }
-      });
-    }
+      } else {
+        params[key] = value;
+      }
+    });
   }
-  return obj;
+  return params;
 }
 
 /**
@@ -136,6 +134,9 @@ export function subscribeMessage(tmplIds = []) {
  */
 export function currentRoute() {
   const pages = getCurrentPages();
+  if (pages.length === 0) {
+    return;
+  }
   const currentPage = pages[pages.length - 1];
   return currentPage?.$page?.fullPath || currentPage.route;
 }
