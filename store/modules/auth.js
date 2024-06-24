@@ -2,7 +2,7 @@ import AuthAPI from "@/api/modules/auth";
 import { store } from "@/store";
 import { cache } from "@/utils/cache";
 import { defineStore } from "pinia";
-import { ref } from "vue";
+import { ref, computed } from "vue";
 
 export const useAuthStore = defineStore("auth", () => {
   const ACCESS_TOKEN = "accessToken";
@@ -10,6 +10,7 @@ export const useAuthStore = defineStore("auth", () => {
 
   const accessToken = ref(cache(ACCESS_TOKEN) ?? "");
   const refreshToken = ref(cache(REFRESH_TOKEN) ?? "");
+  const isLoggedIn = computed(() => !!refreshToken.value);
 
   // 注册
   async function signUp(payload) {
@@ -49,6 +50,7 @@ export const useAuthStore = defineStore("auth", () => {
   }
 
   return {
+    isLoggedIn,
     accessToken,
     refreshToken,
     signUp,

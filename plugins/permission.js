@@ -56,7 +56,7 @@ export function hasRoute(route = "") {
   const authStore = useAuthStore();
   const path = route.split("?")[0];
   // 在白名单中或有token，直接放行
-  const hasPermission = whiteList.includes(path) || !!authStore.refreshToken;
+  const hasPermission = whiteList.includes(path) || authStore.isLoggedIn;
   if (!hasPermission) {
     // 将用户的目标路径传递过去，这样可以实现用户登录之后，直接跳转到目标页面
     uni.redirectTo({

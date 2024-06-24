@@ -7,13 +7,13 @@ export default defineConfig(({ mode }) => {
   return {
     plugins: [uni()],
     server: {
-      port: Number(env.VITE_PORT),
+      port: Number.parseInt(env.VITE_APP_PORT, 10),
       proxy: {
-        [env.VITE_BASE_API]: {
+        [env.VITE_APP_PROXY_PREFIX]: {
           changeOrigin: true,
-          target: env.VITE_BASE_URL,
+          target: env.VITE_APP_BASE_URL,
           rewrite: (path) =>
-            path.replace(new RegExp("^" + env.VITE_BASE_API), ""),
+            path.replace(new RegExp("^" + env.VITE_APP_PROXY_PREFIX), ""),
         },
       },
     },

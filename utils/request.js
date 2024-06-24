@@ -19,10 +19,10 @@ const CODE_SUCCESS = 200;
 const CODE_ACCESS_TOKEN = 4003;
 const CODE_REFRESH_TOKEN = 4004;
 // H5开发环境做跨域处理
-let baseURL = import.meta.env.VITE_BASE_URL;
+let baseURL = import.meta.env.VITE_APP_BASE_URL;
 // #ifdef H5
 if (import.meta.env.DEV) {
-  baseURL = import.meta.env.VITE_BASE_API;
+  baseURL = import.meta.env.VITE_APP_PROXY_PREFIX;
 }
 // #endif
 // 请求重试队列，每一项将是一个待执行的函数形式
