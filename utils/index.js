@@ -84,7 +84,7 @@ export function locationScope() {
               uni.showModal({
                 title: "地理位置权限设置",
                 content:
-                  '请在"位置消息"勾选仅在使用小程序期间，否则可能无法正常提供服务',
+                  '请在"位置消息"中勾选"仅在使用小程序期间"，否则可能无法正常提供服务',
                 success: function (res) {
                   if (res.confirm) {
                     //打开设置（用户发生点击行为后，才可以跳转打开设置页）
@@ -122,6 +122,19 @@ export function subscribeMessage(tmplIds = []) {
         resolve(acceptTmplIds);
       },
       fail: (err) => {
+        if (err.errCode === 20004) {
+          uni.showModal({
+            title: "通知管理设置",
+            content: '请在"通知管理"中打开"接收通知"，否则可能无法正常提供服务',
+            success: function (res) {
+              if (res.confirm) {
+                uni.openSetting({
+                  withSubscriptions: true,
+                });
+              }
+            },
+          });
+        }
         reject(err);
       },
     });
@@ -153,4 +166,27 @@ export function ksort(obj = {}) {
     newObj[key] = obj[key];
   });
   return newObj;
+}
+
+/**
+ * 查询节点信息
+ * 注意：使用 uni.createSelectorQuery() 需要在生命周期 mounted 后进行调用
+ * @param {Object} selector
+ * @param {Boolean} all
+ */
+export function getRect(selector, all = false) {
+  return new Promise((resolve) => {
+    uni
+      .createSelectorQuery()
+      [all ? "selectAll" : "select"](selector)
+      .boundingClientRect((rect) => {
+        if (all && Array.isArray(rect) && rect.length) {
+          resolve(rect);
+        }
+        if (!all && rect) {
+          resolve(rect);
+        }
+      })
+      .exec();
+  });
 }

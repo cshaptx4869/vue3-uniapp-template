@@ -145,6 +145,11 @@ $uv.http.interceptors.response.use(
       uni.hideLoading();
     }
 
+    // 下载文件,直接返回响应对象
+    if (response.config.method === "DOWNLOAD") {
+      return response;
+    }
+
     // 服务器返回的数据
     let result = response.data;
     // if 与后台规定的成功码是否正常

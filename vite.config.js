@@ -1,5 +1,6 @@
 import { defineConfig, loadEnv } from "vite";
 import uni from "@dcloudio/vite-plugin-uni";
+import pkg from "./package.json";
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, __dirname);
@@ -22,8 +23,15 @@ export default defineConfig(({ mode }) => {
       terserOptions: {
         compress: {
           drop_console: true,
+          drop_debugger: true,
         },
       },
+    },
+    define: {
+      __APP_INFO__: JSON.stringify({
+        pkg,
+        buildTimestamp: Date.now(),
+      }),
     },
   };
 });
