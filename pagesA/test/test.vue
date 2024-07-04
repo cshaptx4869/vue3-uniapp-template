@@ -6,8 +6,14 @@
 
 <script setup>
 import { usePermission } from "@/hooks/usePermission";
+import { onShow } from "@dcloudio/uni-app";
 
-usePermission();
+onShow(async () => {
+  console.log("test page onShow");
+  const hasPermission = await usePermission();
+  console.log(hasPermission ? "已登录" : "跳转登录");
+  // 以下开始写业务逻辑...
+});
 </script>
 
 <style lang="scss" scoped>
