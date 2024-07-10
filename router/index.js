@@ -3,7 +3,7 @@ import pagesJson from "@/pages.json";
 // 路径常量
 export const HOME_PATH = "/pages/index/index";
 export const LOGIN_PATH = "/pages/login/login";
-export const Error404_PATH = "/pages/404/404";
+export const ERROR404_PATH = "/pages/404/404";
 
 /**
  * 解析路由地址

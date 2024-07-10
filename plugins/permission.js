@@ -1,4 +1,4 @@
-import { Error404_PATH, isPathExists, LOGIN_PATH, routes } from "@/router";
+import { ERROR404_PATH, isPathExists, LOGIN_PATH, routes } from "@/router";
 import { useAuthStore } from "@/store/modules/auth";
 
 // 白名单路由
@@ -17,7 +17,7 @@ routes.forEach((item) => {
 export function hasPerm(path = "") {
   if (!isPathExists(path)) {
     uni.redirectTo({
-      url: Error404_PATH,
+      url: ERROR404_PATH,
     });
     return false;
   }
