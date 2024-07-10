@@ -9,10 +9,11 @@
 </template>
 
 <script setup>
+import { HOME_PATH, isTabBarPath } from "@/router";
 import { useAuthStore } from "@/store";
 import { onLoad } from "@dcloudio/uni-app";
 
-let redirect = "/pages/index/index";
+let redirect = HOME_PATH;
 onLoad((options) => {
   if (options.redirect) {
     redirect = decodeURIComponent(options.redirect);
@@ -29,7 +30,7 @@ async function handleRegister() {
   uni.$uv.toast("注册成功");
   setTimeout(() => {
     uni.$uv.route({
-      type: "redirectTo",
+      type: isTabBarPath(redirect) ? "switchTab" : "redirectTo",
       url: redirect,
     });
   }, 800);
@@ -43,7 +44,7 @@ async function handleLogin() {
   uni.$uv.toast("登录成功");
   setTimeout(() => {
     uni.$uv.route({
-      type: "redirectTo",
+      type: isTabBarPath(redirect) ? "switchTab" : "redirectTo",
       url: redirect,
     });
   }, 800);

@@ -1,4 +1,4 @@
-import { hasRoute } from "@/plugins/permission";
+import { hasPerm } from "@/plugins/permission";
 import { currentRoute } from "@/utils";
 
 // 对某些特殊场景需要在页面onShow生命周期中校验权限:
@@ -6,5 +6,5 @@ import { currentRoute } from "@/utils";
 // 2.h5在浏览器地址栏输入url后跳转不触发uni的路由api
 // 3.首次启动加载的页面不触发uni的路由api
 export async function usePermission() {
-  return hasRoute(currentRoute());
+  return hasPerm(currentRoute());
 }
