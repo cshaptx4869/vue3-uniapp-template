@@ -2,61 +2,62 @@ import AuthAPI from "@/api/modules/auth";
 import { store } from "@/store";
 import { cache } from "@/utils/cache";
 import { defineStore } from "pinia";
-import { ref, computed } from "vue";
 
 export const useAuthStore = defineStore("auth", () => {
+  // token认证的方式
+  const TOKEN_SCHEMA = "Bearer ";
   const ACCESS_TOKEN = "accessToken";
   const REFRESH_TOKEN = "refreshToken";
-
-  const accessToken = ref(cache(ACCESS_TOKEN) ?? "");
-  const refreshToken = ref(cache(REFRESH_TOKEN) ?? "");
-  const isLoggedIn = computed(() => !!refreshToken.value);
 
   // 注册
   async function signUp(payload) {
     const response = await AuthAPI.signUp(payload);
-    cache(ACCESS_TOKEN, response.accessToken);
-    cache(REFRESH_TOKEN, response.refreshToken);
-    accessToken.value = response.accessToken;
-    refreshToken.value = response.refreshToken;
+    cache(ACCESS_TOKEN, TOKEN_SCHEMA + response.accessToken);
+    cache(REFRESH_TOKEN, TOKEN_SCHEMA + response.refreshToken);
     return response;
   }
 
   // 登录
   async function signIn(payload) {
     const response = await AuthAPI.signIn(payload);
-    cache(ACCESS_TOKEN, response.accessToken);
-    cache(REFRESH_TOKEN, response.refreshToken);
-    accessToken.value = response.accessToken;
-    refreshToken.value = response.refreshToken;
+    cache(ACCESS_TOKEN, TOKEN_SCHEMA + response.accessToken);
+    cache(REFRESH_TOKEN, TOKEN_SCHEMA + response.refreshToken);
     return response;
+  }
+
+  // 登出
+  function signOut() {
+    cache(ACCESS_TOKEN, null);
+    cache(REFRESH_TOKEN, null);
   }
 
   // 刷新token
   async function refresh(payload) {
     const response = await AuthAPI.refresh(payload);
-    cache(ACCESS_TOKEN, response.accessToken);
-    accessToken.value = response.accessToken;
-
+    cache(ACCESS_TOKEN, TOKEN_SCHEMA + response.accessToken);
     return response;
   }
 
-  // 退出登录
-  function signOut() {
-    cache(ACCESS_TOKEN, null);
-    cache(REFRESH_TOKEN, null);
-    accessToken.value = "";
-    refreshToken.value = "";
+  function getAccessToken() {
+    return cache(ACCESS_TOKEN);
+  }
+
+  function getRefreshToken() {
+    return cache(REFRESH_TOKEN);
+  }
+
+  function isLoggedIn() {
+    return cache(REFRESH_TOKEN) !== null;
   }
 
   return {
-    isLoggedIn,
-    accessToken,
-    refreshToken,
     signUp,
     signIn,
     signOut,
     refresh,
+    getAccessToken,
+    getRefreshToken,
+    isLoggedIn,
   };
 });
 

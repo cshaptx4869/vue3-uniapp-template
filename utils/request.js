@@ -1,5 +1,6 @@
 import { i18n } from "@/locale";
 import { $uv } from "@/plugins/ui";
+import { LOGIN_PATH } from "@/router";
 import { useAuthStore } from "@/store/modules/auth";
 import { currentRoute, ksort } from "@/utils";
 import MD5 from "crypto-js/md5";
@@ -7,8 +8,6 @@ import MD5 from "crypto-js/md5";
 // 接口签名
 const API_SAFE = true;
 const API_KEY = "8oJliIOB2gKLFHec0jmM7Z5S9Y4UdQnP";
-// token认证的方式
-const TOKEN_SCHEMA = "Bearer ";
 // 请求头
 const HEADER_ACCESS_TOKEN = "Authorization";
 const HEADER_REFRESH_TOKEN = "Pass";
@@ -98,7 +97,7 @@ $uv.http.interceptors.request.use(
     // 引用token
     if (config.custom.auth) {
       const authStore = useAuthStore();
-      config.header[HEADER_ACCESS_TOKEN] = TOKEN_SCHEMA + authStore.accessToken;
+      config.header[HEADER_ACCESS_TOKEN] = authStore.getAccessToken() ?? "";
     }
 
     // 生成接口签名
@@ -166,7 +165,7 @@ $uv.http.interceptors.response.use(
           isRefreshing = true;
           authStore
             .refresh({
-              [HEADER_REFRESH_TOKEN]: TOKEN_SCHEMA + authStore.refreshToken,
+              [HEADER_REFRESH_TOKEN]: authStore.getRefreshToken() ?? "",
             })
             .then(() => {
               requests.forEach((request) => request());
@@ -176,7 +175,7 @@ $uv.http.interceptors.response.use(
               authStore.signOut();
               $uv.route({
                 type: "redirectTo",
-                url: "/pages/login/login",
+                url: LOGIN_PATH,
                 params: {
                   redirect: encodeURIComponent(currentRoute()),
                 },

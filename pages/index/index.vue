@@ -23,7 +23,7 @@
         text="请求数据"
         @click="handleRequest"
       ></uv-button>
-      <template v-if="authStore.isLoggedIn">
+      <template v-if="isLoggedIn">
         <uv-button type="error" text="注销" @click="handleLogout"></uv-button>
       </template>
     </view>
@@ -58,8 +58,10 @@ function handleJump() {
 
 // 注销
 const authStore = useAuthStore();
+const isLoggedIn = ref(authStore.isLoggedIn());
 function handleLogout() {
   authStore.signOut();
+  isLoggedIn.value = authStore.isLoggedIn();
 }
 </script>
 

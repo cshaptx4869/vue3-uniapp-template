@@ -24,7 +24,7 @@ export function hasPerm(path = "") {
   const authStore = useAuthStore();
   // 在白名单中或有token，直接放行
   const hasPermission =
-    whiteList.includes(path.split("?")[0]) || authStore.isLoggedIn;
+    whiteList.includes(path.split("?")[0]) || authStore.isLoggedIn();
   if (!hasPermission) {
     // 将用户的目标路径传递过去，这样可以实现用户登录之后，直接跳转到目标页面
     uni.redirectTo({
