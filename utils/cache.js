@@ -5,11 +5,10 @@ class Cache {
   // 写入
   set(key, value = "", expire = 0) {
     let ttl = expire > 0 ? Date.now() + expire * 1000 : 0;
-    uni.setStorageSync(key, {
+    return uni.setStorageSync(key, {
       value,
       ttl,
     });
-    return true;
   }
 
   // 读取
@@ -20,21 +19,19 @@ class Cache {
       if (data.ttl === 0) {
         return data.value;
       }
-      return Date.now() > data.ttl ? null : data.value;
+      return Date.now() > data.ttl ? defalut : data.value;
     }
     return defalut;
   }
 
   // 删除
   delete(key) {
-    uni.removeStorageSync(key);
-    return true;
+    return uni.removeStorageSync(key);
   }
 
   // 清空
   clear() {
-    uni.clearStorageSync();
-    return true;
+    return uni.clearStorageSync();
   }
 }
 
