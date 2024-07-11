@@ -32,8 +32,8 @@ export const useAuthStore = defineStore("auth", () => {
   }
 
   // 刷新token
-  async function refresh(payload) {
-    const response = await AuthAPI.refresh(payload);
+  async function refreshToken(payload) {
+    const response = await AuthAPI.refreshToken(payload);
     cache(ACCESS_TOKEN, TOKEN_SCHEMA + response.accessToken);
     return response;
   }
@@ -54,7 +54,7 @@ export const useAuthStore = defineStore("auth", () => {
     signUp,
     signIn,
     signOut,
-    refresh,
+    refreshToken,
     getAccessToken,
     getRefreshToken,
     isLoggedIn,

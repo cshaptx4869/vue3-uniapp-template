@@ -20,7 +20,7 @@ class AuthAPI {
   }
 
   // 刷新token
-  static refresh(header = {}) {
+  static refreshToken(header = {}) {
     return http.post("/auth/refresh", undefined, {
       header,
     });

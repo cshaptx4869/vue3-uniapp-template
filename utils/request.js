@@ -8,6 +8,8 @@ import MD5 from "crypto-js/md5";
 // 接口签名
 const API_SAFE = true;
 const API_KEY = "8oJliIOB2gKLFHec0jmM7Z5S9Y4UdQnP";
+// 启用 refreshToken
+const ENABLED_REFRESH_TOKEN = true;
 // 请求头
 const HEADER_ACCESS_TOKEN = "Authorization";
 const HEADER_REFRESH_TOKEN = "Pass";
@@ -15,8 +17,8 @@ const HEADER_I18N = "I18n";
 const HEADER_SIGN = "Sign";
 // code值
 const CODE_SUCCESS = 200;
-const CODE_ACCESS_TOKEN = 4003;
-const CODE_REFRESH_TOKEN = 4004;
+const CODE_ACCESS_TOKEN_INVALID = 4003;
+const CODE_REFRESH_TOKEN_INVALID = 4004;
 // H5开发环境做跨域处理
 let baseURL = import.meta.env.VITE_APP_BASE_URL;
 // #ifdef H5
@@ -149,51 +151,64 @@ $uv.http.interceptors.response.use(
       return response;
     }
 
-    // 服务器返回的数据
-    let result = response.data;
-    // if 与后台规定的成功码是否正常
-    if (result.code == CODE_SUCCESS) {
-      return result.result || result.data;
-    } else if (result.code == CODE_ACCESS_TOKEN) {
-      const authStore = useAuthStore();
-      // 短token失效
-      return new Promise((resolve, reject) => {
-        // 将resolve放进重试队列，用一个函数形式来保存，等token刷新后直接执行
-        requests.push(() => resolve($uv.http.request(response.config)));
-        // 刷新短token
-        if (!isRefreshing) {
-          isRefreshing = true;
-          authStore
-            .refresh({
-              [HEADER_REFRESH_TOKEN]: authStore.getRefreshToken() ?? "",
-            })
-            .then(() => {
-              requests.forEach((request) => request());
-            })
-            .catch(() => {
-              // 捕获长token失效的reject
-              authStore.signOut();
-              $uv.route({
-                type: "redirectTo",
-                url: LOGIN_PATH,
-                params: {
-                  redirect: encodeURIComponent(currentRoute()),
-                },
+    // 服务器返回的数据 ｛code:xxx,data:xxx,msg:xxx}
+    const { code, data, msg } = response.data;
+    if (code === CODE_SUCCESS) {
+      // 成功
+      return data;
+    } else if (code === CODE_ACCESS_TOKEN_INVALID) {
+      // 短token无效或过期
+      if (!ENABLED_REFRESH_TOKEN) {
+        useAuthStore().signOut();
+        $uv.route({
+          type: "redirectTo",
+          url: LOGIN_PATH,
+          params: {
+            redirect: encodeURIComponent(currentRoute()),
+          },
+        });
+        return Promise.reject(new Error(msg || "access token invalid"));
+      } else {
+        const authStore = useAuthStore();
+        return new Promise((resolve, reject) => {
+          // 将resolve放进重试队列，用一个函数形式来保存，等token刷新后直接执行
+          requests.push(() => resolve($uv.http.request(response.config)));
+          // 刷新短token
+          if (!isRefreshing) {
+            isRefreshing = true;
+            authStore
+              .refreshToken({
+                [HEADER_REFRESH_TOKEN]: authStore.getRefreshToken() ?? "",
+              })
+              .then(() => {
+                requests.forEach((request) => request());
+              })
+              .catch(() => {
+                // 捕获长token失效的reject
+                authStore.signOut();
+                $uv.route({
+                  type: "redirectTo",
+                  url: LOGIN_PATH,
+                  params: {
+                    redirect: encodeURIComponent(currentRoute()),
+                  },
+                });
+              })
+              .finally(() => {
+                requests = [];
+                isRefreshing = false;
               });
-            })
-            .finally(() => {
-              requests = [];
-              isRefreshing = false;
-            });
-        }
-      });
-    } else if (result.code == CODE_REFRESH_TOKEN) {
-      //长token失效
-      return Promise.reject(response);
+          }
+        });
+      }
+    } else if (code === CODE_REFRESH_TOKEN_INVALID) {
+      // 长token无效或过期
+      return Promise.reject(new Error(msg || "refresh token invalid"));
+    } else {
+      // 其他错误
+      $uv.toast(msg || "系统出错");
+      return Promise.reject(new Error(msg || "system error"));
     }
-
-    $uv.toast(result.msg);
-    return Promise.reject(response);
   },
   (response) => {
     /*  对响应错误做点什么 */
@@ -201,9 +216,9 @@ $uv.http.interceptors.response.use(
       404: "您所请求的资源无法找到",
       500: "服务器内部错误，无法完成请求",
     };
-    let errorMessage = codeMessage[response.statusCode] ?? response.errMsg;
+    const errorMessage = codeMessage[response.statusCode] ?? response.errMsg;
     $uv.toast(errorMessage);
-    return Promise.reject(response);
+    return Promise.reject(errorMessage);
   }
 );
 
