@@ -99,7 +99,7 @@ $uv.http.interceptors.request.use(
     // 引用token
     if (config.custom.auth) {
       const authStore = useAuthStore();
-      config.header[HEADER_ACCESS_TOKEN] = authStore.getAccessToken() ?? "";
+      config.header[HEADER_ACCESS_TOKEN] = authStore.accessToken;
     }
 
     // 生成接口签名
@@ -177,8 +177,8 @@ $uv.http.interceptors.response.use(
           if (!isRefreshing) {
             isRefreshing = true;
             authStore
-              .refreshToken({
-                [HEADER_REFRESH_TOKEN]: authStore.getRefreshToken() ?? "",
+              .refresh({
+                [HEADER_REFRESH_TOKEN]: authStore.refreshToken,
               })
               .then(() => {
                 requests.forEach((request) => request());
@@ -212,13 +212,13 @@ $uv.http.interceptors.response.use(
   },
   (response) => {
     /*  对响应错误做点什么 */
-    const codeMessage = {
+    const codeMsg = {
       404: "您所请求的资源无法找到",
       500: "服务器内部错误，无法完成请求",
     };
-    const errorMessage = codeMessage[response.statusCode] ?? response.errMsg;
-    $uv.toast(errorMessage);
-    return Promise.reject(errorMessage);
+    const errMsg = codeMsg[response.statusCode] ?? "异常错误";
+    $uv.toast(errMsg);
+    return Promise.reject(new Error(errMsg));
   }
 );
 

@@ -2,62 +2,61 @@ import AuthAPI from "@/api/modules/auth";
 import { store } from "@/store";
 import { cache } from "@/utils/cache";
 import { defineStore } from "pinia";
+import { computed, ref, watch } from "vue";
 
 export const useAuthStore = defineStore("auth", () => {
-  // token认证的方式
-  const TOKEN_SCHEMA = "Bearer ";
-  const ACCESS_TOKEN = "accessToken";
-  const REFRESH_TOKEN = "refreshToken";
+  const TOKEN_EXPIRES = 3 * 86400;
+  const ACCESS_TOKEN_KEY = "accessToken";
+  const REFRESH_TOKEN_KEY = "refreshToken";
+  const accessToken = ref(cache(ACCESS_TOKEN_KEY) ?? "");
+  const refreshToken = ref(cache(REFRESH_TOKEN_KEY) ?? "");
+  const isLoggedIn = computed(() => !!refreshToken.value);
+
+  watch(accessToken, (newValue) => cache(ACCESS_TOKEN_KEY, newValue || null));
+  watch(refreshToken, (newValue) =>
+    cache(REFRESH_TOKEN_KEY, newValue || null, TOKEN_EXPIRES)
+  );
 
   // 注册
   async function signUp(payload) {
     const response = await AuthAPI.signUp(payload);
-    cache(ACCESS_TOKEN, TOKEN_SCHEMA + response.accessToken);
-    cache(REFRESH_TOKEN, TOKEN_SCHEMA + response.refreshToken);
+    const prefix = response.tokenType ? `${response.tokenType} ` : "";
+    accessToken.value = prefix + response.accessToken;
+    refreshToken.value = prefix + response.refreshToken;
     return response;
   }
 
   // 登录
   async function signIn(payload) {
     const response = await AuthAPI.signIn(payload);
-    cache(ACCESS_TOKEN, TOKEN_SCHEMA + response.accessToken);
-    cache(REFRESH_TOKEN, TOKEN_SCHEMA + response.refreshToken);
+    const prefix = response.tokenType ? `${response.tokenType} ` : "";
+    accessToken.value = prefix + response.accessToken;
+    refreshToken.value = prefix + response.refreshToken;
     return response;
   }
 
   // 登出
   function signOut() {
-    cache(ACCESS_TOKEN, null);
-    cache(REFRESH_TOKEN, null);
+    accessToken.value = "";
+    refreshToken.value = "";
   }
 
   // 刷新token
-  async function refreshToken(payload) {
+  async function refresh(payload) {
     const response = await AuthAPI.refreshToken(payload);
-    cache(ACCESS_TOKEN, TOKEN_SCHEMA + response.accessToken);
+    const prefix = response.tokenType ? `${response.tokenType} ` : "";
+    accessToken.value = prefix + response.accessToken;
     return response;
   }
 
-  function getAccessToken() {
-    return cache(ACCESS_TOKEN);
-  }
-
-  function getRefreshToken() {
-    return cache(REFRESH_TOKEN);
-  }
-
-  function isLoggedIn() {
-    return cache(REFRESH_TOKEN) !== null;
-  }
-
   return {
+    accessToken,
+    refreshToken,
+    isLoggedIn,
     signUp,
     signIn,
     signOut,
-    refreshToken,
-    getAccessToken,
-    getRefreshToken,
-    isLoggedIn,
+    refresh,
   };
 });
 
