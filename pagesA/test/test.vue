@@ -4,7 +4,7 @@
   </view>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { usePermission } from "@/hooks/usePermission";
 import { onShow } from "@dcloudio/uni-app";
 
@@ -14,6 +14,10 @@ onShow(async () => {
   console.log(hasPermission ? "已登录" : "跳转登录");
   // 以下开始写业务逻辑...
 });
+
+// 编写ts代码
+let ts: string = "Just TS!";
+console.log(ts);
 </script>
 
 <style lang="scss" scoped>
