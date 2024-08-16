@@ -66,7 +66,9 @@
       "scope.userFuzzyLocation": {
         "desc": "您的位置信息将用于小程序位置接口的效果展示"
       }
-    }
+    },
+    /* 地理位置相关接口配置项 @see https://developers.weixin.qq.com/community/develop/doc/000a02f2c5026891650e7f40351c01 */
+    "requiredPrivateInfos": ["getLocation", "chooseLocation"]
   },
   "mp-alipay": {
     "usingComponents": true

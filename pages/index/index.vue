@@ -28,6 +28,11 @@
         text="地图导航"
         @click="handleMapNavigation"
       ></uv-button>
+      <uv-button
+        type="primary"
+        text="获取位置"
+        @click="handleGetLocation"
+      ></uv-button>
       <template v-if="authStore.isLoggedIn">
         <uv-button type="error" text="注销" @click="handleLogout"></uv-button>
       </template>
@@ -64,19 +69,46 @@ function handleJump() {
 
 // 地图导航
 function handleMapNavigation() {
+  // 打开地图选择位置
+  uni.chooseLocation({
+    latitude: 30.084718,
+    longitude: 120.602738,
+    success: (res) => {
+      // 使用微信内置地图查看位置
+      uni.openLocation({
+        latitude: res.latitude,
+        longitude: res.longitude,
+        scale: 18,
+        name: res.name,
+        address: res.address,
+        fail: () => {
+          console.log("🚀 ~ openLocation ~ err");
+        },
+      });
+    },
+    fail: (err) => {
+      console.log("🚀 ~ chooseLocation ~ err:", err);
+    },
+  });
+}
+
+// 获取位置
+function handleGetLocation() {
   applyAuthorize("scope.userLocation")
     .then(() => {
-      uni.openLocation({
-        latitude: 30.084718,
-        longitude: 120.602738,
-        scale: 18, //缩放比例
-        name: "车管服务大厅",
-        address: "浙江省绍兴市越城区汤公路(精工汽车文化创意园北侧)",
-        success: function () {
-          console.log("打开位置成功");
+      // 获取当前的地理位置、速度
+      uni.getLocation({
+        type: "gcj02", // gcj02 返回可用于 wx.openLocation 的坐标
+        altitude: true,
+        isHighAccuracy: true,
+        success: (res) => {
+          uni.showModal({
+            title: "",
+            content: `纬度:${res.latitude},经度:${res.longitude},速度:${res.speed}m/s,位置的精确度:${res.accuracy},高度:${res.altitude}m,垂直精度:${res.verticalAccuracy}m,水平精度:${res.horizontalAccuracy}m`,
+          });
         },
-        fail: function () {
-          console.log("打开位置失败");
+        fail: (err) => {
+          console.log("🚀 ~ getLocation ~ err:", err);
         },
       });
     })
