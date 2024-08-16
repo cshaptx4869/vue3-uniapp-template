@@ -45,6 +45,27 @@ import { UserAPI } from "@/api";
 import { useAuthStore } from "@/store";
 import { applyAuthorize } from "@/utils";
 import { ref } from "vue";
+import { onShareAppMessage, onShareTimeline } from "@dcloudio/uni-app";
+
+// 分享给朋友
+onShareAppMessage((data) => {
+  console.log("🚀 ~ onShareAppMessage ~ data:", data);
+  return {
+    title: "vue3-uniapp-template",
+    path: "/pages/index/index",
+    imageUrl: "https://img-cdn-tx.dcloud.net.cn/uni-app/logo-U.png", // 显示图片长宽比是 5:4
+  };
+});
+
+// 分享到朋友圈
+onShareTimeline((data) => {
+  console.log("🚀 ~ onShareTimeline ~ data:", data);
+  return {
+    title: "vue3-uniapp-template",
+    query: "a=1&b=2",
+    imageUrl: "https://qiniu-web-assets.dcloud.net.cn/unidoc/zh/icon.png", // 显示图片长宽比是 1:1
+  };
+});
 
 // 请求数据
 const userList = ref([]);
