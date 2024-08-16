@@ -65,41 +65,63 @@ export function parseURLSearchParams(url = "") {
 }
 
 /**
- * 地理位置授权申请
+ * 授权申请
+ * @param {string} scope
  * @returns
+ * @see https://developers.weixin.qq.com/miniprogram/dev/framework/open-ability/authorize.html
  */
-export function locationScope() {
+export function applyAuthorize(scope) {
+  const scopeMap = {
+    "scope.userLocation": "精确地理位置",
+    "scope.userFuzzyLocation": "模糊地理位置",
+    "scope.userLocationBackground": "后台定位",
+    "scope.record": "麦克风",
+    "scope.camera": "摄像头",
+    "scope.bluetooth": "蓝牙",
+    "scope.writePhotosAlbum": "添加到相册",
+    "scope.addPhoneContact": "添加到通讯录",
+    "scope.addPhoneCalendar": "添加到日历",
+    "scope.werun": "微信运动步数",
+    // "scope.address": "通讯地址",
+    // "scope.invoiceTitle": "发票抬头",
+    // "scope.invoice": "获取发票",
+    // "scope.userInfo": "用户信息",
+  };
+  if (Object.keys(scopeMap).includes(scope) === false) {
+    throw new Error("scope 参数非法");
+  }
+
   return new Promise((resolve, reject) => {
+    // 获取用户授权设置
     uni.getSetting({
       success: (res) => {
-        // console.log('获取设置', res)
-        if (res.authSetting["scope.userLocation"] === false) {
-          //申请获取地理位置授权
+        // console.log("授权状态", res);
+        if (res.authSetting[scope] !== true) {
+          // 发起授权请求
           uni.authorize({
-            scope: "scope.userLocation",
+            scope: scope,
             success: () => {
               resolve("用户同意授权");
             },
             fail: () => {
+              reject("用户拒绝授权");
               uni.showModal({
-                title: "地理位置权限设置",
-                content:
-                  '请在"位置消息"中勾选"仅在使用小程序期间"，否则可能无法正常提供服务',
+                title: "权限申请",
+                content: `请在设置界面中开启[${scopeMap[scope]}]权限，否则可能无法正常提供服务`,
                 success: function (res) {
                   if (res.confirm) {
-                    //打开设置（用户发生点击行为后，才可以跳转打开设置页）
+                    // 打开设置界面(用户发生点击行为后，才可以跳转打开设置页)
                     uni.openSetting({
                       withSubscriptions: true,
                     });
                   }
                 },
               });
-              reject("用户拒绝授权");
             },
           });
         } else {
           // 已同意授权的
-          resolve("用户已同意授权");
+          resolve("用户已授权");
         }
       },
     });

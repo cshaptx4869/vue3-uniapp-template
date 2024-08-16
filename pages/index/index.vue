@@ -23,6 +23,11 @@
         text="请求数据"
         @click="handleRequest"
       ></uv-button>
+      <uv-button
+        type="info"
+        text="地图导航"
+        @click="handleMapNavigation"
+      ></uv-button>
       <template v-if="authStore.isLoggedIn">
         <uv-button type="error" text="注销" @click="handleLogout"></uv-button>
       </template>
@@ -31,9 +36,10 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
-import { useAuthStore } from "@/store";
 import { UserAPI } from "@/api";
+import { useAuthStore } from "@/store";
+import { applyAuthorize } from "@/utils";
+import { ref } from "vue";
 
 // 请求数据
 const userList = ref([]);
@@ -54,6 +60,29 @@ function handleWebview() {
 // 路由跳转
 function handleJump() {
   uni.$uv.route("/pagesA/test/test");
+}
+
+// 地图导航
+function handleMapNavigation() {
+  applyAuthorize("scope.userLocation")
+    .then(() => {
+      uni.openLocation({
+        latitude: 30.084718,
+        longitude: 120.602738,
+        scale: 18, //缩放比例
+        name: "车管服务大厅",
+        address: "浙江省绍兴市越城区汤公路(精工汽车文化创意园北侧)",
+        success: function () {
+          console.log("打开位置成功");
+        },
+        fail: function () {
+          console.log("打开位置失败");
+        },
+      });
+    })
+    .catch((err) => {
+      console.log("🚀 ~ applyAuthorize ~ err:", err);
+    });
 }
 
 // 注销

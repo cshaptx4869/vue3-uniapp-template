@@ -24,11 +24,11 @@ onHide(() => {
 });
 
 onError((error) => {
-  console.log("App Error", error);
+  console.error("App Error", error);
 });
 
 onPageNotFound((res) => {
-  console.log("PageNotFound", res);
+  console.error("PageNotFound", res);
   uni.redirectTo({
     url: "/pages/404/404",
   });
