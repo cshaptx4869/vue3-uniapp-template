@@ -1,0 +1,16 @@
+{
+  "id": "4657887",
+  "name": "vue3-uniapp-template",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "19317486",
+      "name": "uniapp",
+      "font_class": "uniapp",
+      "unicode": "e624",
+      "unicode_decimal": 58916
+    }
+  ]
+}

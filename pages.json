@@ -1,4 +1,17 @@
 {
+  //组件自动引入规则 https://uniapp.dcloud.net.cn/collocation/pages.html#easycom
+  "easycom": {
+    "autoscan": true,
+    "custom": {
+      "^x-(.*)": "@/components/x-$1/index.vue"
+    }
+  },
+  "globalStyle": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "uni-app",
+    "navigationBarBackgroundColor": "#F8F8F8",
+    "backgroundColor": "#F8F8F8"
+  },
   "pages": [
     //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
     {
@@ -29,6 +42,12 @@
         "navigationBarTitleText": "",
         "enablePullDownRefresh": false
       }
+    },
+    {
+      "path": "pages/demo/demo",
+      "style": {
+        "navigationBarTitleText": "扩展"
+      }
     }
   ],
   "subPackages": [
@@ -46,11 +65,25 @@
       ]
     }
   ],
-  "globalStyle": {
-    "navigationBarTextStyle": "black",
-    "navigationBarTitleText": "uni-app",
-    "navigationBarBackgroundColor": "#F8F8F8",
-    "backgroundColor": "#F8F8F8"
-  },
-  "uniIdRouter": {}
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#5AC725",
+    "backgroundColor": "#F8F8F8",
+    "position": "bottom",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "iconPath": "static/tabbar/index.png",
+        "selectedIconPath": "static/tabbar/index_HL.png",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/demo/demo",
+        "iconPath": "static/tabbar/demo.png",
+        "selectedIconPath": "static/tabbar/demo_HL.png",
+        "text": "扩展功能"
+      }
+    ]
+  }
 }
