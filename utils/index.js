@@ -66,6 +66,7 @@ export function parseURLSearchParams(url = "") {
 
 /**
  * 授权申请
+ * 注意: 需要授权 scope.userLocation、scope.userLocationBackground、scope.userFuzzyLocation 时必须在 permission 中配置地理位置用途说明
  * @param {string} scope
  * @returns
  * @see https://developers.weixin.qq.com/miniprogram/dev/framework/open-ability/authorize.html
