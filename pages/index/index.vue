@@ -1,5 +1,7 @@
 <template>
   <view class="container">
+    <x-add-miniprogram name="vue3-uniapp-template" />
+
     <view>
       <image class="logo" src="/static/logo.png"></image>
       <view class="title">

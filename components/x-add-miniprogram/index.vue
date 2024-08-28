@@ -97,6 +97,9 @@ const addMiniprogramImage =
   .title {
     font-weight: bold;
     margin-bottom: 20px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .setup {
