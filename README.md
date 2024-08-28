@@ -121,6 +121,6 @@ vue3-uniapp-template
 
 1. 移除pagesA目录
 2. 移除pages/demo目录
-3. 移除pages.json中无用路由以及subPackages、tabBar
+3. 移除pages.json中无用路由以及subPackages、preloadRule、tabBar
 4. 移除manifest.json中mp-weixin下的permission、requiredPrivateInfos配置
 5. 修改首页、登录页内容

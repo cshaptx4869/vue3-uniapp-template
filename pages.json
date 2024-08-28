@@ -65,6 +65,16 @@
       ]
     }
   ],
+  "preloadRule": {
+    "pages/index/index": {
+      "network": "wifi",
+      "packages": ["pagesA"]
+    },
+    "pagesA/test/test": {
+      "network": "all",
+      "packages": ["__APP__"]
+    }
+  },
   "tabBar": {
     "color": "#999999",
     "selectedColor": "#5AC725",

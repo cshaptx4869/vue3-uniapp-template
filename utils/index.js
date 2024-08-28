@@ -197,6 +197,7 @@ export function ksort(obj = {}) {
  * @param {String} selector
  * @param {Boolean} all
  * @returns {Promise}
+ * @see https://developers.weixin.qq.com/miniprogram/dev/api/wxml/NodesRef.boundingClientRect.html
  */
 export function getRect(selector, all = false) {
   return new Promise((resolve) => {
@@ -220,7 +221,7 @@ export function getRect(selector, all = false) {
  * @param {String} v1
  * @param {String} v2
  * @returns {Number} 1大于 0等于 -1小于
- * @link https://developers.weixin.qq.com/miniprogram/dev/framework/compatibility.html
+ * @see https://developers.weixin.qq.com/miniprogram/dev/framework/compatibility.html
  */
 export function compareVersion(v1, v2) {
   const parts1 = v1.split(".").map(Number);
