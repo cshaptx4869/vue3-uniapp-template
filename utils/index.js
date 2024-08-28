@@ -31,17 +31,17 @@ export function checkForUpdate() {
 
 /**
  * 导航栏高度(针对小程序)
- * @returns
+ * @returns {String}
  */
 export function navigationBarHeight() {
-  const { top, height } = uni.getMenuButtonBoundingClientRect();
-  return `${top + height + 8}px`;
+  const { bottom } = uni.getMenuButtonBoundingClientRect();
+  return `${bottom + 8}px`;
 }
 
 /**
  * 解析url查询参数
  * @param {String} url
- * @returns
+ * @returns {Object}
  */
 export function parseURLSearchParams(url = "") {
   const params = {};
@@ -67,8 +67,8 @@ export function parseURLSearchParams(url = "") {
 /**
  * 授权申请
  * 注意: 需要授权 scope.userLocation、scope.userLocationBackground、scope.userFuzzyLocation 时必须在 permission 中配置地理位置用途说明
- * @param {string} scope
- * @returns
+ * @param {String} scope
+ * @returns {Promise}
  * @see https://developers.weixin.qq.com/miniprogram/dev/framework/open-ability/authorize.html
  */
 export function applyAuthorize(scope) {
@@ -132,7 +132,7 @@ export function applyAuthorize(scope) {
 /**
  * 消息订阅
  * @param {Array} tmplIds
- * @returns
+ * @returns {Promise}
  */
 export function subscribeMessage(tmplIds = []) {
   return new Promise((resolve, reject) => {
@@ -166,7 +166,7 @@ export function subscribeMessage(tmplIds = []) {
 
 /**
  * 当前路由
- * @returns
+ * @returns {String}
  */
 export function currentRoute() {
   const pages = getCurrentPages();
@@ -180,7 +180,7 @@ export function currentRoute() {
 /**
  * 对象属性按字典排序
  * @param {Object} obj
- * @returns
+ * @returns {Object}
  */
 export function ksort(obj = {}) {
   const keys = Object.keys(obj).sort();
@@ -194,8 +194,9 @@ export function ksort(obj = {}) {
 /**
  * 查询节点信息
  * 注意：使用 uni.createSelectorQuery() 需要在生命周期 mounted 后进行调用
- * @param {Object} selector
+ * @param {String} selector
  * @param {Boolean} all
+ * @returns {Promise}
  */
 export function getRect(selector, all = false) {
   return new Promise((resolve) => {
@@ -212,4 +213,29 @@ export function getRect(selector, all = false) {
       })
       .exec();
   });
+}
+
+/**
+ * 比较版本号
+ * @param {String} v1
+ * @param {String} v2
+ * @returns {Number} 1大于 0等于 -1小于
+ * @link https://developers.weixin.qq.com/miniprogram/dev/framework/compatibility.html
+ */
+export function compareVersion(v1, v2) {
+  const parts1 = v1.split(".").map(Number);
+  const parts2 = v2.split(".").map(Number);
+
+  const len = Math.max(parts1.length, parts2.length);
+
+  for (let i = 0; i < len; i++) {
+    const num1 = parts1[i] || 0;
+    const num2 = parts2[i] || 0;
+
+    if (num1 !== num2) {
+      return num1 > num2 ? 1 : -1;
+    }
+  }
+
+  return 0;
 }
