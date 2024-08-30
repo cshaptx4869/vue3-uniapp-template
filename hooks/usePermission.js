@@ -1,5 +1,5 @@
 import { hasPerm } from "@/plugins/permission";
-import { currentRoute } from "@/utils";
+import { currentRoute } from "@/router";
 
 // 对某些特殊场景需要在页面onShow生命周期中校验权限:
 // 1.微信小程序端点击tabbar的底层逻辑不触发uni.switchTab

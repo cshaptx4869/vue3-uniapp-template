@@ -45,12 +45,34 @@ function parseRoutes(pagesJson = {}) {
 export const routes = parseRoutes(pagesJson);
 
 /**
+ * 当前路由
+ * @returns {String}
+ */
+export function currentRoute() {
+  const pages = getCurrentPages();
+  if (pages.length === 0) {
+    return;
+  }
+  const currentPage = pages[pages.length - 1];
+  return currentPage?.$page?.fullPath || currentPage.route;
+}
+
+/**
+ * 去除查询字符串
+ * @param {String} path
+ * @returns
+ */
+export function removeQueryString(path = "") {
+  return path.split("?")[0];
+}
+
+/**
  * 路径是否存在
  * @param {String} path
  * @returns
  */
 export function isPathExists(path = "") {
-  const cleanPath = path.split("?")[0];
+  const cleanPath = removeQueryString(path);
   return routes.some((item) => item.path === cleanPath);
 }
 
@@ -60,7 +82,7 @@ export function isPathExists(path = "") {
  * @returns
  */
 export function isTabBarPath(path = "") {
-  const cleanPath = path.split("?")[0];
+  const cleanPath = removeQueryString(path);
   return (
     pagesJson.tabBar?.list?.some(
       (item) => `/${item.pagePath}` === cleanPath

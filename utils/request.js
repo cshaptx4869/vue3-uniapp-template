@@ -1,8 +1,8 @@
 import { i18n } from "@/locale";
 import { $uv } from "@/plugins/ui";
-import { LOGIN_PATH } from "@/router";
+import { currentRoute, LOGIN_PATH, removeQueryString } from "@/router";
 import { useAuthStore } from "@/store/modules/auth";
-import { currentRoute, ksort } from "@/utils";
+import { ksort } from "@/utils";
 import MD5 from "crypto-js/md5";
 
 // 接口签名
@@ -160,13 +160,7 @@ $uv.http.interceptors.response.use(
       // 短token无效或过期
       if (!ENABLED_REFRESH_TOKEN) {
         useAuthStore().signOut();
-        $uv.route({
-          type: "redirectTo",
-          url: LOGIN_PATH,
-          params: {
-            redirect: encodeURIComponent(currentRoute()),
-          },
-        });
+        redirectToLoginPage();
         return Promise.reject(new Error(msg || "access token invalid"));
       } else {
         const authStore = useAuthStore();
@@ -186,13 +180,7 @@ $uv.http.interceptors.response.use(
               .catch(() => {
                 // 捕获长token失效的reject
                 authStore.signOut();
-                $uv.route({
-                  type: "redirectTo",
-                  url: LOGIN_PATH,
-                  params: {
-                    redirect: encodeURIComponent(currentRoute()),
-                  },
-                });
+                redirectToLoginPage();
               })
               .finally(() => {
                 requests = [];
@@ -221,5 +209,19 @@ $uv.http.interceptors.response.use(
     return Promise.reject(new Error(errMsg));
   }
 );
+
+// 跳转登录页
+function redirectToLoginPage() {
+  const path = currentRoute();
+  if (removeQueryString(path) !== LOGIN_PATH) {
+    $uv.route({
+      type: "redirectTo",
+      url: LOGIN_PATH,
+      params: {
+        redirect: encodeURIComponent(path),
+      },
+    });
+  }
+}
 
 export default $uv.http;

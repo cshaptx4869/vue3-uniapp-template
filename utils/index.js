@@ -44,24 +44,23 @@ export function navigationBarHeight() {
  * @returns {Object}
  */
 export function parseURLSearchParams(url = "") {
-  const params = {};
-  url = decodeURIComponent(url);
+  const queryParams = {};
   if (url.includes("?")) {
-    const pairs = url.split("?")[1].split("&");
-    pairs.forEach((item) => {
-      const [key, value] = item.split("=");
-      if (params.hasOwnProperty(key)) {
-        if (Array.isArray(params[key])) {
-          params[key].push(value);
+    const keyValueArr = url.split("?")[1].split("&");
+    keyValueArr.forEach((item) => {
+      const [key, value] = item.split("=").map(decodeURIComponent);
+      if (queryParams.hasOwnProperty(key)) {
+        if (Array.isArray(queryParams[key])) {
+          queryParams[key].push(value);
         } else {
-          params[key] = [params[key], value];
+          queryParams[key] = [queryParams[key], value];
         }
       } else {
-        params[key] = value;
+        queryParams[key] = value;
       }
     });
   }
-  return params;
+  return queryParams;
 }
 
 /**
@@ -162,19 +161,6 @@ export function subscribeMessage(tmplIds = []) {
       },
     });
   });
-}
-
-/**
- * 当前路由
- * @returns {String}
- */
-export function currentRoute() {
-  const pages = getCurrentPages();
-  if (pages.length === 0) {
-    return;
-  }
-  const currentPage = pages[pages.length - 1];
-  return currentPage?.$page?.fullPath || currentPage.route;
 }
 
 /**

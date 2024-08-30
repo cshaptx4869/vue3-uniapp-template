@@ -9,13 +9,18 @@
 </template>
 
 <script setup>
-import { HOME_PATH, isTabBarPath } from "@/router";
+import {
+  HOME_PATH,
+  LOGIN_PATH,
+  isTabBarPath,
+  removeQueryString,
+} from "@/router";
 import { useAuthStore } from "@/store";
 import { onLoad } from "@dcloudio/uni-app";
 
 let redirect = HOME_PATH;
 onLoad((options) => {
-  if (options.redirect) {
+  if (options.redirect && removeQueryString(options.redirect) !== LOGIN_PATH) {
     redirect = decodeURIComponent(options.redirect);
   }
 });
