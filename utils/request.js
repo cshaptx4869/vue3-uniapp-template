@@ -11,14 +11,18 @@ const API_KEY = "8oJliIOB2gKLFHec0jmM7Z5S9Y4UdQnP";
 // 启用 refreshToken
 const ENABLED_REFRESH_TOKEN = true;
 // 请求头
-const HEADER_ACCESS_TOKEN = "Authorization";
-const HEADER_REFRESH_TOKEN = "Pass";
-const HEADER_I18N = "I18n";
-const HEADER_SIGN = "Sign";
+const HeaderEnum = {
+  ACCESS_TOKEN: "Authorization",
+  REFRESH_TOKEN: "Pass",
+  I18N: "I18n",
+  SIGN: "Sign",
+};
 // code值
-const CODE_SUCCESS = 200;
-const CODE_ACCESS_TOKEN_INVALID = 4003;
-const CODE_REFRESH_TOKEN_INVALID = 4004;
+const CodeEnum = {
+  SUCCESS: 200,
+  ACCESS_TOKEN_INVALID: 4003,
+  REFRESH_TOKEN_INVALID: 4004,
+};
 // H5开发环境做跨域处理
 let baseURL = import.meta.env.VITE_APP_BASE_URL;
 // #ifdef H5
@@ -99,7 +103,7 @@ $uv.http.interceptors.request.use(
     // 引用token
     if (config.custom.auth) {
       const authStore = useAuthStore();
-      config.header[HEADER_ACCESS_TOKEN] = authStore.accessToken;
+      config.header[HeaderEnum.ACCESS_TOKEN] = authStore.accessToken;
     }
 
     // 生成接口签名
@@ -120,12 +124,12 @@ $uv.http.interceptors.request.use(
         }&`;
       }
       signStr += API_KEY;
-      config.header[HEADER_SIGN] = MD5(signStr).toString();
+      config.header[HeaderEnum.SIGN] = MD5(signStr).toString();
       // console.log(signStr);
     }
 
     // 国际化标识
-    config.header[HEADER_I18N] = i18n.global.locale.value;
+    config.header[HeaderEnum.I18N] = i18n.global.locale.value;
 
     // 最后需要将config进行return
     // 如果return Promise.reject(config)，则会取消本次请求
@@ -153,17 +157,17 @@ $uv.http.interceptors.response.use(
 
     // 服务器返回的数据 ｛code:xxx,data:xxx,msg:xxx}
     const { code, data, msg } = response.data;
-    if (code === CODE_SUCCESS) {
+    if (code === CodeEnum.SUCCESS) {
       // 成功
       return data;
-    } else if (code === CODE_ACCESS_TOKEN_INVALID) {
+    } else if (code === CodeEnum.ACCESS_TOKEN_INVALID) {
       // 短token无效或过期
-      if (!ENABLED_REFRESH_TOKEN) {
-        useAuthStore().signOut();
+      const authStore = useAuthStore();
+      if (!ENABLED_REFRESH_TOKEN || !authStore.refreshToken) {
+        authStore.signOut();
         redirectToLoginPage();
         return Promise.reject(new Error(msg || "access token invalid"));
       } else {
-        const authStore = useAuthStore();
         return new Promise((resolve, reject) => {
           // 将resolve放进重试队列，用一个函数形式来保存，等token刷新后直接执行
           requests.push(() => resolve($uv.http.request(response.config)));
@@ -172,7 +176,7 @@ $uv.http.interceptors.response.use(
             isRefreshing = true;
             authStore
               .refresh({
-                [HEADER_REFRESH_TOKEN]: authStore.refreshToken,
+                [HeaderEnum.REFRESH_TOKEN]: authStore.refreshToken,
               })
               .then(() => {
                 requests.forEach((request) => request());
@@ -189,7 +193,7 @@ $uv.http.interceptors.response.use(
           }
         });
       }
-    } else if (code === CODE_REFRESH_TOKEN_INVALID) {
+    } else if (code === CodeEnum.REFRESH_TOKEN_INVALID) {
       // 长token无效或过期
       return Promise.reject(new Error(msg || "refresh token invalid"));
     } else {

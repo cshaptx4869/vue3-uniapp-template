@@ -5,17 +5,14 @@ import { defineStore } from "pinia";
 import { computed, ref, watch } from "vue";
 
 export const useAuthStore = defineStore("auth", () => {
-  const TOKEN_EXPIRES = 3 * 86400;
   const ACCESS_TOKEN_KEY = "accessToken";
   const REFRESH_TOKEN_KEY = "refreshToken";
   const accessToken = ref(cache(ACCESS_TOKEN_KEY) ?? "");
   const refreshToken = ref(cache(REFRESH_TOKEN_KEY) ?? "");
-  const isLoggedIn = computed(() => !!refreshToken.value);
+  const isLoggedIn = computed(() => !!accessToken.value);
 
   watch(accessToken, (newValue) => cache(ACCESS_TOKEN_KEY, newValue || null));
-  watch(refreshToken, (newValue) =>
-    cache(REFRESH_TOKEN_KEY, newValue || null, TOKEN_EXPIRES)
-  );
+  watch(refreshToken, (newValue) => cache(REFRESH_TOKEN_KEY, newValue || null));
 
   // 注册
   async function signUp(payload) {
