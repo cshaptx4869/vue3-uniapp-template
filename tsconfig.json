@@ -1,28 +1,33 @@
 {
   "compilerOptions": {
-    "target": "esnext",
-    "useDefineForClassFields": true,
-    "module": "esnext",
-    "moduleResolution": "node",
-    "strict": true,
-    "noLib": false,
-    "sourceMap": true,
-    "resolveJsonModule": true,
-    "esModuleInterop": true,
-    "lib": ["esnext", "dom"],
-    "baseUrl": ".",
     "allowJs": true,
-    "skipLibCheck": true,
-    "importHelpers": true,
     "allowSyntheticDefaultImports": true,
+    "baseUrl": ".",
+    "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
+    "importHelpers": true,
     "jsx": "preserve",
     "jsxFactory": "h",
     "jsxFragmentFactory": "Fragment",
+    "jsxImportSource": "vue",
+    "lib": ["esnext", "dom"],
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "noEmit": true,
+    "noImplicitThis": true,
+    "noLib": false,
     "paths": {
       "@/*": ["./*"]
     },
-    "types": ["@dcloudio/types"]
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "strict": true,
+    "target": "esnext",
+    "types": ["@dcloudio/types"],
+    "useDefineForClassFields": true,
+    "verbatimModuleSyntax": true
   },
-  "exclude": ["node_modules", "uni_modules", "unpackage", "**/*.js"]
+  "exclude": ["node_modules", "uni_modules", "unpackage", "**/*.js"],
+  "include": ["**/*.{ts,vue}"]
 }
