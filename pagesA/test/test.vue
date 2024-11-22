@@ -6,13 +6,19 @@
 
 <script setup lang="ts">
 import { usePermission } from "@/hooks/usePermission";
-import { onShow } from "@dcloudio/uni-app";
+import { onShow, onPullDownRefresh } from "@dcloudio/uni-app";
 
 onShow(async () => {
   console.log("test page onShow");
   const hasPermission = await usePermission();
   console.log(hasPermission ? "已登录" : "跳转登录");
   // 以下开始写业务逻辑...
+});
+
+onPullDownRefresh(() => {
+  setTimeout(() => {
+    uni.stopPullDownRefresh();
+  }, 300);
 });
 
 // 编写ts代码

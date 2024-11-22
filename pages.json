@@ -10,7 +10,8 @@
     "navigationBarTextStyle": "black",
     "navigationBarTitleText": "uni-app",
     "navigationBarBackgroundColor": "#F8F8F8",
-    "backgroundColor": "#F8F8F8"
+    "backgroundColor": "#F8F8F8",
+    "enablePullDownRefresh": false
   },
   "pages": [
     //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
@@ -24,7 +25,6 @@
       "path": "pages/login/login",
       "style": {
         "navigationBarTitleText": "",
-        "enablePullDownRefresh": false,
         "navigationStyle": "custom"
       }
     },
@@ -32,15 +32,13 @@
       "path": "pages/404/404",
       "style": {
         "navigationBarTitleText": "404",
-        "enablePullDownRefresh": false,
         "navigationStyle": "custom"
       }
     },
     {
       "path": "pages/webview/webview",
       "style": {
-        "navigationBarTitleText": "",
-        "enablePullDownRefresh": false
+        "navigationBarTitleText": ""
       }
     },
     {
@@ -57,8 +55,8 @@
         {
           "path": "test/test",
           "style": {
-            "navigationBarTitleText": "",
-            "enablePullDownRefresh": false
+            "navigationBarTitleText": "分包A",
+            "enablePullDownRefresh": true
           },
           "needLogin": true
         }
