@@ -6,10 +6,10 @@ import { ksort } from "@/utils";
 import MD5 from "crypto-js/md5";
 
 // 接口签名
-const API_SAFE = true;
+const API_SAFE = false;
 const API_KEY = "8oJliIOB2gKLFHec0jmM7Z5S9Y4UdQnP";
 // 启用 refreshToken
-const ENABLED_REFRESH_TOKEN = true;
+const ENABLED_REFRESH_TOKEN = false;
 // 请求头
 const HeaderEnum = {
   ACCESS_TOKEN: "Authorization",
