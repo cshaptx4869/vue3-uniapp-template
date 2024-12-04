@@ -10,16 +10,23 @@ vue3-uniapp-template 是基于 vue3 的 uniapp 快速开发模板，包含状态
 
 ```bash
 # 克隆代码
+#git clone https://gitee.com/cshaptx4869/vue3-uniapp-template.git
 git clone https://github.com/cshaptx4869/vue3-uniapp-template.git
 
 # 切换目录
 cd vue3-uniapp-template
 
-# 安装依赖（使用pnpm也行，但在使用过程中发现一些奇葩的问题，比如安装某个包后引入使用时，会报某个依赖库找不到错误，也不清楚是不是HBuilderX的Bug）
+# 安装依赖
+# 使用pnpm也行，但在使用过程中发现一些奇葩的问题，比如安装某个包后引入使用时，会报某个依赖库找不到错误，也不清楚是不是HBuilderX的Bug
 npm install
 
-# 启动HBuilderX运行项目
+# 启动HBuilderX，导入并运行项目
 ```
+
+使用 HBuilderX 而不是 cli 创建项目的主要理由（摘自[官方文档](https://uniapp.dcloud.net.cn/quickstart-cli.html#clidiff)）：
+
+- HBuilderX 为 uni-app 做了大量优化，其他 ide 搭配 uni-app 使用也可以用，但没有为 uni-app 优化过。
+- 其他 ide 没有 uni-app 的 app 和 uniCloud 的运行、调试工具。这些工具在 HBuilderX 里。如开发 app 和 uniCloud，必须使用 HBuilderX。
 
 ### 效果预览
 
@@ -100,7 +107,7 @@ vue3-uniapp-template
 
 ### 登录鉴权
 
-页面是否需要登录，只需在 pages.json 文件中需要鉴权的页面下设置 needLogin 为 true 即可，比如
+页面是否需要登录，只需在 pages.json 文件中需要鉴权的页面下设置 [needLogin](https://uniapp.dcloud.net.cn/collocation/pages.html#pages) 为 true 即可，比如
 
 ```json
 {
@@ -151,8 +158,8 @@ onShow(async () => {
 
 ### 注意事项
 
-- 接口请求地址在根目录下的 .env.xxx 文件配置（development 为 “运行” 环境，production 为 “发行” 环境）
-- 打开 [uniapp 插件市场](https://ext.dcloud.net.cn)，搜索 [Prettier](https://ext.dcloud.net.cn/plugin?name=formator-prettier)，点击 “下载插件并导入HBuilderX” 安装插件，并配置 Prettier 插件
+- 接口请求地址在根目录下的 `.env.xxx` 文件配置（其中 development 为 “运行” 环境，production 为 “发行” 环境）
+- 打开 uniapp 插件市场，搜索 [Prettier](https://ext.dcloud.net.cn/plugin?name=formator-prettier)，点击 “下载插件并导入HBuilderX” 安装插件，并配置 Prettier 插件
 
 ![](https://github.com/user-attachments/assets/1ed4650a-abf5-4bb2-9533-0254c7458767)
 
