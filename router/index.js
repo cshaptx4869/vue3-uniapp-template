@@ -21,10 +21,17 @@ function parseRoutes(pagesJson = {}) {
   function parsePages(pages = [], rootPath = "") {
     const routes = [];
     for (let i = 0; i < pages.length; i++) {
-      routes.push({
+      const route = {
         path: rootPath ? `/${rootPath}/${pages[i].path}` : `/${pages[i].path}`,
         needLogin: pages[i].needLogin === true,
-      });
+      };
+      // H5 应用的第一个页面地址会匹配 /
+      // #ifdef H5
+      if (rootPath === "" && i === 0) {
+        routes.push({ ...route, path: "/" });
+      }
+      // #endif
+      routes.push(route);
     }
     return routes;
   }
@@ -42,6 +49,7 @@ function parseRoutes(pagesJson = {}) {
     ...parseSubPackages(pagesJson.subPackages),
   ];
 }
+
 export const routes = parseRoutes(pagesJson);
 
 /**

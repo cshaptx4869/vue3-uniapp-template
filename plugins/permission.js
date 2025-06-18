@@ -8,7 +8,7 @@ import {
 import { useAuthStore } from "@/store/modules/auth";
 
 // 白名单路由
-const whiteList = ["/"];
+const whiteList = [];
 routes.forEach((item) => {
   if (item.needLogin !== true) {
     whiteList.push(item.path);
