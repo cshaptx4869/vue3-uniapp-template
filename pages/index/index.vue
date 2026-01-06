@@ -12,6 +12,11 @@
     </view>
 
     <view>
+      <uv-button
+        type="info"
+        text="z-paging"
+        @click="$uv.route('/pages/demo/z-paging')"
+      ></uv-button>
       <uv-button type="info" text="webview" @click="handleWebview"></uv-button>
       <LangSelect>
         <uv-button type="primary" text="切换语言"></uv-button>

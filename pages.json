@@ -46,6 +46,12 @@
       "style": {
         "navigationBarTitleText": "扩展"
       }
+    },
+    {
+      "path": "pages/demo/z-paging",
+      "style": {
+        "navigationBarTitleText": "z-paging"
+      }
     }
   ],
   "subPackages": [
