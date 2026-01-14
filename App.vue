@@ -1,12 +1,7 @@
 <script setup>
-import {
-  onLaunch,
-  onShow,
-  onHide,
-  onError,
-  onPageNotFound,
-} from "@dcloudio/uni-app";
+import { onLaunch, onShow, onHide, onError, onPageNotFound, onUnhandledRejection } from "@dcloudio/uni-app";
 import { checkForUpdate } from "@/utils";
+import { redirectTo404Page } from "@/router";
 
 onLaunch(() => {
   console.log("App Launch");
@@ -27,11 +22,13 @@ onError((error) => {
   console.error("App Error", error);
 });
 
+onUnhandledRejection((res) => {
+  console.error("App UnhandledRejection", res);
+});
+
 onPageNotFound((res) => {
-  console.error("PageNotFound", res);
-  uni.redirectTo({
-    url: "/pages/404/404",
-  });
+  console.error("App PageNotFound", res);
+  redirectTo404Page();
 });
 </script>
 

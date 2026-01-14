@@ -1,16 +1,8 @@
 <template>
   <view>
     <uv-grid :border="false" col="4" @click="handleClick">
-      <uv-grid-item
-        v-for="(listItem, listIndex) in list"
-        :key="listIndex"
-        :name="listItem.name"
-      >
-        <uv-icon
-          :customStyle="{ paddingTop: 20 + 'rpx' }"
-          :name="listItem.name"
-          :size="22"
-        ></uv-icon>
+      <uv-grid-item v-for="(listItem, listIndex) in list" :key="listIndex" :name="listItem.name">
+        <uv-icon :customStyle="{ paddingTop: 20 + 'rpx' }" :name="listItem.name" :size="22"></uv-icon>
         <text class="grid-text">{{ listItem.title }}</text>
       </uv-grid-item>
     </uv-grid>

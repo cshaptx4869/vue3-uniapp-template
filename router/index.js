@@ -5,12 +5,15 @@ export const HOME_PATH = "/pages/index/index";
 export const LOGIN_PATH = "/pages/login/login";
 export const ERROR404_PATH = "/pages/404/404";
 
+// 路由对象数组
+export const routes = parseRoutes(pagesJson);
+
 /**
  * 解析路由地址
  * @param {object} pagesJson
- * @returns [{"path": "/pages/index/index","needLogin": false},...]
+ * @returns [{"path": "/pages/index/index", "route": "pages/index/index", "needLogin": false, "isTabBar": false}]
  */
-function parseRoutes(pagesJson = {}) {
+export function parseRoutes(pagesJson = {}) {
   if (!pagesJson.pages) {
     pagesJson.pages = [];
   }
@@ -21,9 +24,12 @@ function parseRoutes(pagesJson = {}) {
   function parsePages(pages = [], rootPath = "") {
     const routes = [];
     for (let i = 0; i < pages.length; i++) {
+      const absolutePath = rootPath ? `/${rootPath}/${pages[i].path}` : `/${pages[i].path}`;
       const route = {
-        path: rootPath ? `/${rootPath}/${pages[i].path}` : `/${pages[i].path}`,
+        path: absolutePath,
+        route: absolutePath.slice(1),
         needLogin: pages[i].needLogin === true,
+        isTabBar: pagesJson?.tabBar?.list?.some((item) => `/${item.pagePath}` === absolutePath) === true,
       };
       // H5 应用的第一个页面地址会匹配 /
       // #ifdef H5
@@ -44,17 +50,12 @@ function parseRoutes(pagesJson = {}) {
     return routes;
   }
 
-  return [
-    ...parsePages(pagesJson.pages),
-    ...parseSubPackages(pagesJson.subPackages),
-  ];
+  return [...parsePages(pagesJson.pages), ...parseSubPackages(pagesJson.subPackages)];
 }
-
-export const routes = parseRoutes(pagesJson);
 
 /**
  * 当前路由
- * @returns {String}
+ * @returns {String} /开头的路劲地址
  */
 export function currentRoute() {
   const pages = getCurrentPages();
@@ -62,25 +63,18 @@ export function currentRoute() {
     return;
   }
   const currentPage = pages[pages.length - 1];
-  return currentPage?.$page?.fullPath || currentPage.route;
-}
-
-/**
- * 去除查询字符串
- * @param {String} path
- * @returns
- */
-export function removeQueryString(path = "") {
-  return path.split("?")[0];
+  // $page还有path(/开头不带参数的路劲地址)、route(非/开头不带参数的路径地址)等属性
+  // fullPath是/开头带参数的路劲地址; route是非/开头不带参数的路径地址
+  return currentPage?.$page?.fullPath || `/${currentPage.route}`;
 }
 
 /**
  * 路径是否存在
- * @param {String} path
+ * @param {String} fullpath
  * @returns
  */
-export function isPathExists(path = "") {
-  const cleanPath = removeQueryString(path);
+export function isPathExists(fullpath = "") {
+  const cleanPath = removeQueryString(fullpath);
   return routes.some((item) => item.path === cleanPath);
 }
 
@@ -91,9 +85,38 @@ export function isPathExists(path = "") {
  */
 export function isTabBarPath(path = "") {
   const cleanPath = removeQueryString(path);
-  return (
-    pagesJson.tabBar?.list?.some(
-      (item) => `/${item.pagePath}` === cleanPath
-    ) === true
-  );
+  return routes.filter((item) => item.isTabBar === true).some((item) => item.path === cleanPath);
+}
+
+/**
+ * 跳转登录页
+ * @param {String} path 目标路径
+ */
+export function redirectToLoginPage(path = "") {
+  const targetPath = path !== "" ? path : currentRoute();
+  if (removeQueryString(targetPath) !== LOGIN_PATH) {
+    uni.redirectTo({
+      url: `${LOGIN_PATH}?redirect=${encodeURIComponent(targetPath)}`,
+    });
+  }
+}
+
+export function redirectTo404Page() {
+  uni.redirectTo({
+    url: ERROR404_PATH,
+  });
+}
+
+export function redirectToHomePage() {
+  const func = isTabBarPath(HOME_PATH) ? uni.switchTab : uni.redirectTo;
+  func({ url: HOME_PATH });
+}
+
+/**
+ * 去除查询字符串
+ * @param {String} path
+ * @returns
+ */
+export function removeQueryString(path = "") {
+  return path.split("?")[0];
 }

@@ -13,13 +13,10 @@
 </template>
 
 <script setup>
-import { HOME_PATH, isTabBarPath } from "@/router";
+import { redirectToHomePage } from "@/router";
 
 function handleBack() {
-  uni.$uv.route({
-    type: isTabBarPath(HOME_PATH) ? "switchTab" : "redirectTo",
-    url: HOME_PATH,
-  });
+  redirectToHomePage();
 }
 </script>
 

@@ -28,8 +28,7 @@ export default defineConfig(({ mode }) => {
         [env.VITE_APP_PROXY_PREFIX]: {
           changeOrigin: true,
           target: env.VITE_APP_BASE_URL,
-          rewrite: (path) =>
-            path.replace(new RegExp("^" + env.VITE_APP_PROXY_PREFIX), ""),
+          rewrite: (path) => path.replace(new RegExp("^" + env.VITE_APP_PROXY_PREFIX), ""),
         },
       },
     },

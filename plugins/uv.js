@@ -1,9 +1,12 @@
+/* uni.$uv 在引入 uv-ui-tools 之后才能使用, 详见 @/uni_modules/uv-ui-tools/index.js */
 import uvUI from "@/uni_modules/uv-ui-tools";
+import { setupRequest } from "./request";
 
-export function setupUI(app) {
-  // UV扩展配置 https://www.uvui.cn/components/setting.html
+export function setupUV(app) {
+  /* UV扩展配置 https://www.uvui.cn/components/setting.html */
   app.use(uvUI);
-  // 调用setConfig方法，方法内部会进行对象属性深度合并，可以放心嵌套配置
+
+  /* 调用setConfig方法，方法内部会进行对象属性深度合并，可以放心嵌套配置 */
   uni.$uv.setConfig({
     // 修改$uv.config对象的属性
     config: {
@@ -23,6 +26,16 @@ export function setupUI(app) {
       // ......
     },
   });
+
+  /* 初始化请求配置 https://www.uvui.cn/js/http.html */
+  let baseURL = import.meta.env.VITE_APP_BASE_URL;
+  // #ifdef H5
+  if (import.meta.env.VITE_APP_PROXY_PREFIX !== "") {
+    // H5环境做跨域处理
+    baseURL = import.meta.env.VITE_APP_PROXY_PREFIX;
+  }
+  // #endif
+  setupRequest(baseURL);
 }
 
-export const $uv = uni.$uv;
+export const { http } = uni.$uv;

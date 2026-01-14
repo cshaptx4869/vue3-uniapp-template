@@ -103,13 +103,8 @@ export const BCMath = {
     const calArr = this.getParam(args);
     const remainder = calArr.reduce((accum, curr) => {
       const corrFactor = this.correctionFactor([accum, curr]);
-      return (
-        (Math.round(accum * corrFactor) % Math.round(curr * corrFactor)) /
-        corrFactor
-      );
+      return (Math.round(accum * corrFactor) % Math.round(curr * corrFactor)) / corrFactor;
     });
     return remainder;
   },
 };
-
-export default BCMath;

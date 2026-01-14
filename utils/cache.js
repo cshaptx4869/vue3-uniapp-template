@@ -35,8 +35,7 @@ class Cache {
   }
 }
 
-const cacheInstance = new Cache();
-export default cacheInstance;
+export const cacheInstance = new Cache();
 
 /**
  * 缓存操作(获取、删除、设置)

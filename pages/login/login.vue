@@ -9,12 +9,8 @@
 </template>
 
 <script setup>
-import {
-  HOME_PATH,
-  LOGIN_PATH,
-  isTabBarPath,
-  removeQueryString,
-} from "@/router";
+import { AuthAPI } from "@/api";
+import { HOME_PATH, LOGIN_PATH, isTabBarPath, removeQueryString } from "@/router";
 import { useAuthStore } from "@/store";
 import { onLoad } from "@dcloudio/uni-app";
 
@@ -28,10 +24,12 @@ onLoad((options) => {
 const authStore = useAuthStore();
 
 async function handleRegister() {
-  await authStore.signUp({
+  const { tokenType, accessToken, refreshToken } = await AuthAPI.signUp({
     username: "visitor",
     password: "123456",
   });
+  authStore.setToken(tokenType ? `${tokenType} ${accessToken}` : accessToken);
+  authStore.setToken(refreshToken ? `${tokenType} ${refreshToken}` : refreshToken, true);
   uni.$uv.toast("注册成功");
   setTimeout(() => {
     uni.$uv.route({
@@ -42,10 +40,12 @@ async function handleRegister() {
 }
 
 async function handleLogin() {
-  await authStore.signIn({
+  const { tokenType, accessToken, refreshToken } = await AuthAPI.signIn({
     username: "visitor",
     password: "123456",
   });
+  authStore.setToken(tokenType ? `${tokenType} ${accessToken}` : accessToken);
+  authStore.setToken(refreshToken ? `${tokenType} ${refreshToken}` : refreshToken, true);
   uni.$uv.toast("登录成功");
   setTimeout(() => {
     uni.$uv.route({

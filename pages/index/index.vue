@@ -12,26 +12,14 @@
     </view>
 
     <view>
-      <uv-button
-        type="info"
-        text="z-paging"
-        @click="$uv.route('/pages/demo/z-paging')"
-      ></uv-button>
+      <uv-button type="info" text="z-paging" @click="$uv.route('/pages/demo/z-paging')"></uv-button>
       <uv-button type="info" text="webview" @click="handleWebview"></uv-button>
       <LangSelect>
         <uv-button type="primary" text="切换语言"></uv-button>
       </LangSelect>
-      <uv-button
-        type="warning"
-        text="路由跳转(拦截)"
-        @click="handleJump"
-      ></uv-button>
-      <uv-button
-        type="success"
-        text="请求数据"
-        @click="handleRequest"
-      ></uv-button>
-      <template v-if="authStore.isLoggedIn">
+      <uv-button type="warning" text="路由跳转(拦截)" @click="handleJump"></uv-button>
+      <uv-button type="success" text="请求数据" @click="handleRequest"></uv-button>
+      <template v-if="authStore.token">
         <uv-button type="error" text="注销" @click="handleLogout"></uv-button>
       </template>
     </view>
@@ -41,8 +29,8 @@
 <script setup>
 import { UserAPI } from "@/api";
 import { useAuthStore } from "@/store";
-import { ref } from "vue";
 import { onShareAppMessage, onShareTimeline } from "@dcloudio/uni-app";
+import { ref } from "vue";
 
 // 分享给朋友
 onShareAppMessage((data) => {

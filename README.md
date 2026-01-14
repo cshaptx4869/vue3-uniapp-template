@@ -51,8 +51,15 @@ vue3-uniapp-template
 │     └─ user.js
 ├─ App.vue
 ├─ components						   // 项目组件库
-│  ├─ LangSelect					   // 语言切换组件
-│  │  └─ LangSelect.vue
+│  ├─ IconFont                         // 图标字体组件
+│  │  ├─ iconfont.css
+│  │  ├─ iconfont.json
+│  │  ├─ iconfont.ttf
+│  │  ├─ IconFont.vue
+│  │  ├─ iconfont.woff
+│  │  └─ iconfont.woff2
+│  └─ LangSelect					   // 语言切换组件
+│     └─ LangSelect.vue
 ├─ hooks							   // hooks管理
 │  └─ usePermission.js			       // 登录鉴权hook
 ├─ index.html
@@ -70,6 +77,9 @@ vue3-uniapp-template
 ├─ pages							   // 页面管理
 │  ├─ 404
 │  │  └─ 404.vue
+│  ├─ demo
+│  │  ├─ demo.vue
+│  │  └─ z-paging.vue
 │  ├─ index
 │  │  └─ index.vue
 │  ├─ login
@@ -82,27 +92,39 @@ vue3-uniapp-template
 │     └─ test.vue
 ├─ plugins							   // 插件管理
 │  ├─ index.js
-│  ├─ permission.js					   // 路由拦截
-│  └─ ui.js							   // UV-UI扩展配置
+│  ├─ request.js					   // 网络请求
+│  └─ uv.js							   // UV-UI
 ├─ README.md
+├─ router
+│  ├─ guard.js                         // 路由守卫
+│  ├─ index.js
+│  └─ whitelist.js
 ├─ static							   // 静态资源管理
 │  ├─ 404.png
-│  └─ logo.png
+│  ├─ logo.png
+│  └─ tabbar
+│     ├─ demo.png
+│     ├─ demo_HL.png
+│     ├─ index.png
+│     └─ index_HL.png
 ├─ store							   // store管理
 │  ├─ index.js
 │  └─ modules						   // store模块化
 │     ├─ auth.js
 │     └─ user.js
 ├─ uni.scss
+├─ uni_modules
 ├─ utils                               // 工具管理
+│  ├─ bcmath.js                        // 高精度计算
 │  ├─ cache.js                         // 缓存
-│  └─ request.js                       // 网络请求
+│  ├─ index.js
+│  └─ token.js                         // token管理
 └─ vite.config.js
 ```
 
 这边提一嘴，uniapp 默认启用[easycom 组件规范](https://uniapp.dcloud.net.cn/component/#easycom)
 
-- 只要组件安装在项目的 components 目录下或 uni_modules 目录下，并符合`components/组件名称/组件名称.(vue|uvue)`目录结构。就可以不用引用、注册，直接在页面中使用。 
+- 只要组件安装在项目的 components 目录下或 uni_modules 目录下，并符合`components/组件名称/组件名称.(vue|uvue)`目录结构。就可以不用引用、注册，直接在页面中使用。
 - 如果你的组件名称或路径不符合 easycom 的默认规范，可以在 pages.json 的 easycom 节点进行个性化设置，自定义匹配组件的策略。
 
 ### 登录鉴权

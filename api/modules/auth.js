@@ -1,7 +1,13 @@
-import http from "@/utils/request";
+import { http } from "@/plugins/uv";
 
-class AuthAPI {
-  // 注册
+export class AuthAPI {
+  /**
+   * 注册
+   * @param {{ username: string; password: string }} data - 注册参数
+   * @param {string} data.username - 用户名
+   * @param {string} data.password - 密码
+   * @returns {Promise<{ tokenType: string; accessToken: string; refreshToken: string; }>}
+   */
   static signUp(data) {
     return http.post("/auth/signup", data, {
       custom: {
@@ -10,7 +16,13 @@ class AuthAPI {
     });
   }
 
-  // 登录
+  /**
+   * 登录
+   * @param {{ username: string; password: string }} data - 登录参数
+   * @param {string} data.username - 用户名
+   * @param {string} data.password - 密码
+   * @returns {Promise<{ tokenType: string; accessToken: string; refreshToken: string; }>}
+   */
   static signIn(data) {
     return http.post("/auth/signin", data, {
       custom: {
@@ -19,12 +31,16 @@ class AuthAPI {
     });
   }
 
-  // 刷新token
-  static refreshToken(header = {}) {
+  /**
+   * 刷新访问令牌（access_token）
+   * @returns {Promise<{ tokenType: string; accessToken: string; }>}
+   */
+  static refreshToken() {
     return http.post("/auth/refresh", undefined, {
-      header,
+      custom: {
+        auth: true,
+        withRefreshToken: true,
+      },
     });
   }
 }
-
-export default AuthAPI;

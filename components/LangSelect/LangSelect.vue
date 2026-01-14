@@ -1,11 +1,6 @@
 <template>
   <view>
-    <picker
-      range-key="label"
-      :range="langOptions"
-      :value="langIndex"
-      @change="handleLangChange"
-    >
+    <picker range-key="label" :range="langOptions" :value="langIndex" @change="handleLangChange">
       <slot>
         <image
           :style="langStyle"

@@ -1,6 +1,6 @@
-import http from "@/utils/request";
+import { http } from "@/plugins/uv";
 
-class UserAPI {
+export class UserAPI {
   // test get api
   static getUserList(params = {}) {
     return http.get("/user/list", {
@@ -12,5 +12,3 @@ class UserAPI {
     });
   }
 }
-
-export default UserAPI;

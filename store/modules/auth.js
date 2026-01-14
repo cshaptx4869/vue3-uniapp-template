@@ -1,59 +1,30 @@
-import AuthAPI from "@/api/modules/auth";
 import { store } from "@/store";
-import { cache } from "@/utils/cache";
+import { setToken as _setToken, getToken, removeToken } from "@/utils/token";
 import { defineStore } from "pinia";
-import { computed, ref, watch } from "vue";
+import { ref } from "vue";
 
 export const useAuthStore = defineStore("auth", () => {
-  const ACCESS_TOKEN_KEY = "accessToken";
-  const REFRESH_TOKEN_KEY = "refreshToken";
-  const accessToken = ref(cache(ACCESS_TOKEN_KEY) ?? "");
-  const refreshToken = ref(cache(REFRESH_TOKEN_KEY) ?? "");
-  const isLoggedIn = computed(() => !!accessToken.value);
+  // 主要用于需要根据状态更新页面的场景
+  const token = ref(getToken() || "");
 
-  watch(accessToken, (newValue) => cache(ACCESS_TOKEN_KEY, newValue || null));
-  watch(refreshToken, (newValue) => cache(REFRESH_TOKEN_KEY, newValue || null));
-
-  // 注册
-  async function signUp(payload) {
-    const response = await AuthAPI.signUp(payload);
-    const prefix = response.tokenType ? `${response.tokenType} ` : "";
-    accessToken.value = prefix + response.accessToken;
-    refreshToken.value = prefix + response.refreshToken;
-    return response;
-  }
-
-  // 登录
-  async function signIn(payload) {
-    const response = await AuthAPI.signIn(payload);
-    const prefix = response.tokenType ? `${response.tokenType} ` : "";
-    accessToken.value = prefix + response.accessToken;
-    refreshToken.value = prefix + response.refreshToken;
-    return response;
-  }
+  // 设置 Token
+  const setToken = (value, refresh = false) => {
+    _setToken(value, refresh);
+    if (!refresh) {
+      token.value = value;
+    }
+  };
 
   // 登出
-  function signOut() {
-    accessToken.value = "";
-    refreshToken.value = "";
-  }
-
-  // 刷新token
-  async function refresh(payload) {
-    const response = await AuthAPI.refreshToken(payload);
-    const prefix = response.tokenType ? `${response.tokenType} ` : "";
-    accessToken.value = prefix + response.accessToken;
-    return response;
-  }
+  const signOut = () => {
+    removeToken();
+    token.value = "";
+  };
 
   return {
-    accessToken,
-    refreshToken,
-    isLoggedIn,
-    signUp,
-    signIn,
+    token,
+    setToken,
     signOut,
-    refresh,
   };
 });
 

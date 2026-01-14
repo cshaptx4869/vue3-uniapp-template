@@ -1,26 +1,16 @@
 <template>
-  <z-paging
-    ref="paging"
-    v-model="dataList"
-    auto-show-back-to-top
-    @query="queryList"
-  >
+  <z-paging ref="paging" v-model="dataList" auto-show-back-to-top @query="queryList">
     <!-- z-paging默认铺满全屏，此时页面所有view都应放在z-paging标签内，否则会被盖住 -->
     <!-- 需要固定在页面顶部的view请通过slot="top"插入，包括自定义的导航栏 -->
     <template #top>
-      <uv-tabs
-        :list="tabList"
-        :activeStyle="{ color: '#3c9cff' }"
-        @click="tabClick"
-      />
+      <uv-tabs :list="tabList" :activeStyle="{ color: '#3c9cff' }" @click="tabClick" />
     </template>
 
     <view class="item" v-for="(item, index) in dataList" :key="index">
       <view class="item-title">标题{{ index + 1 }}</view>
       <view class="item-content">
-        uni-app is a framework for developing all front-end applications using
-        Vue.js. Developers write a set of codes that can be published to iOS,
-        Android, HarmonyOS Next, Web (responsive) and various MiniApp
+        uni-app is a framework for developing all front-end applications using Vue.js. Developers write a set of codes
+        that can be published to iOS, Android, HarmonyOS Next, Web (responsive) and various MiniApp
         (weixin/alipay/baidu/douyin/lark).
       </view>
     </view>

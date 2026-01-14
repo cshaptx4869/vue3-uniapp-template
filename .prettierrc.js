@@ -15,7 +15,7 @@ module.exports = {
   // 在 JSX 中使用单引号替代双引号，默认false
   jsxSingleQuote: false,
   // 每行最多字符数量，超出换行(默认80)
-  printWidth: 80,
+  printWidth: 120,
   // 超出打印宽度 (always | never | preserve )
   proseWrap: "preserve",
   // 对象属性是否使用引号(as-needed | consistent | preserve;默认as-needed:对象的属性需要加引号才添加;)
