@@ -10,7 +10,7 @@ export const routes = parseRoutes(pagesJson);
 
 /**
  * 解析路由地址
- * @param {object} pagesJson
+ * @param {Object} pagesJson 页面配置
  * @returns [{"path": "/pages/index/index", "route": "pages/index/index", "needLogin": false, "isTabBar": false}]
  */
 export function parseRoutes(pagesJson = {}) {
@@ -55,9 +55,9 @@ export function parseRoutes(pagesJson = {}) {
 
 /**
  * 当前路由
- * @returns {String} /开头的路劲地址
+ * @returns {String} 以/开头的路劲地址
  */
-export function currentRoute() {
+export function currentPath() {
   const pages = getCurrentPages();
   if (pages.length === 0) {
     return;
@@ -71,32 +71,36 @@ export function currentRoute() {
 /**
  * 路径是否存在
  * @param {String} fullpath
- * @returns
+ * @returns {Boolean}
  */
-export function isPathExists(fullpath = "") {
+export function isPathExists(fullpath) {
   const cleanPath = removeQueryString(fullpath);
   return routes.some((item) => item.path === cleanPath);
 }
 
 /**
  * 是否是tabbar页面路径
- * @param {String} path
- * @returns
+ * @param {String} fullpath
+ * @returns {Boolean}
  */
-export function isTabBarPath(path = "") {
-  const cleanPath = removeQueryString(path);
+export function isTabBarPath(fullpath) {
+  const cleanPath = removeQueryString(fullpath);
   return routes.filter((item) => item.isTabBar === true).some((item) => item.path === cleanPath);
 }
 
 /**
  * 跳转登录页
- * @param {String} path 目标路径
+ * @param {String} redirect 登录后重定向地址
  */
-export function redirectToLoginPage(path = "") {
-  const targetPath = path !== "" ? path : currentRoute();
+export function redirectToLoginPage(redirect = "") {
+  const targetPath = redirect !== "" ? redirect : currentPath();
   if (removeQueryString(targetPath) !== LOGIN_PATH) {
     uni.redirectTo({
       url: `${LOGIN_PATH}?redirect=${encodeURIComponent(targetPath)}`,
+    });
+  } else {
+    uni.redirectTo({
+      url: LOGIN_PATH,
     });
   }
 }
@@ -115,7 +119,7 @@ export function redirectToHomePage() {
 /**
  * 去除查询字符串
  * @param {String} path
- * @returns
+ * @returns {String}
  */
 export function removeQueryString(path = "") {
   return path.split("?")[0];

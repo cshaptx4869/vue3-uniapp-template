@@ -1,4 +1,4 @@
-import { currentRoute } from "@/router";
+import { currentPath } from "@/router";
 import { hasPerm } from "@/router/guard";
 
 /**
@@ -10,5 +10,5 @@ import { hasPerm } from "@/router/guard";
  * @returns {Boolean} 是否有权限
  */
 export async function usePermission() {
-  return hasPerm(currentRoute());
+  return hasPerm(currentPath());
 }

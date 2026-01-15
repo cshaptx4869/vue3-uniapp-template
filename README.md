@@ -172,7 +172,7 @@ onShow(async () => {
 
 ### 网络请求
 
-网络请求封装文件：utils/request.js 文件
+网络请求封装文件：plugins/request.js 文件
 
 - 默认未启用接口签名，可以修改 `API_SAFE` 为 true 启用，并建议修改 `API_KEY` 值。
 - 默认未启用 refresh token，可以修改 `ENABLED_REFRESH_TOKEN` 为 true 启用。

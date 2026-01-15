@@ -29,5 +29,5 @@
     "verbatimModuleSyntax": true
   },
   "exclude": ["node_modules", "uni_modules", "unpackage", "**/*.js"],
-  "include": ["**/*.{ts,vue}"]
+  "include": ["**/*.ts", "**/*.d.ts", "**/*.vue"]
 }

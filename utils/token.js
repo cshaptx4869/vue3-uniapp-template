@@ -7,9 +7,10 @@ const REFRESH_TOKEN_KEY = "refreshToken";
  * 设置 Token
  * @param {String} value Token值
  * @param {Boolean} refresh 是否是RefreshToken
+ * @param {Number} expire 过期时间，单位秒
  */
-function setToken(value, refresh = false) {
-  cacheInstance.set(refresh ? REFRESH_TOKEN_KEY : ACCESS_TOKEN_KEY, value);
+function setToken(value, refresh = false, expire = 0) {
+  cacheInstance.set(refresh ? REFRESH_TOKEN_KEY : ACCESS_TOKEN_KEY, value, expire);
 }
 
 /**

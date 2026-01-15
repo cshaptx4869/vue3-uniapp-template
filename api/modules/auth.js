@@ -6,7 +6,7 @@ export class AuthAPI {
    * @param {{ username: string; password: string }} data - 注册参数
    * @param {string} data.username - 用户名
    * @param {string} data.password - 密码
-   * @returns {Promise<{ tokenType: string; accessToken: string; refreshToken: string; }>}
+   * @returns {Promise<{ tokenType: string; accessToken: string; expiresIn: number; refreshToken: string; }>}
    */
   static signUp(data) {
     return http.post("/auth/signup", data, {
@@ -21,7 +21,7 @@ export class AuthAPI {
    * @param {{ username: string; password: string }} data - 登录参数
    * @param {string} data.username - 用户名
    * @param {string} data.password - 密码
-   * @returns {Promise<{ tokenType: string; accessToken: string; refreshToken: string; }>}
+   * @returns {Promise<{ tokenType: string; accessToken: string; expiresIn: number; refreshToken: string; }>}
    */
   static signIn(data) {
     return http.post("/auth/signin", data, {
@@ -33,7 +33,7 @@ export class AuthAPI {
 
   /**
    * 刷新访问令牌（access_token）
-   * @returns {Promise<{ tokenType: string; accessToken: string; }>}
+   * @returns {Promise<{ tokenType: string; accessToken: string; expiresIn: number; }>}
    */
   static refreshToken() {
     return http.post("/auth/refresh", undefined, {

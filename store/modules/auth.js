@@ -7,9 +7,14 @@ export const useAuthStore = defineStore("auth", () => {
   // 主要用于需要根据状态更新页面的场景
   const token = ref(getToken() || "");
 
-  // 设置 Token
-  const setToken = (value, refresh = false) => {
-    _setToken(value, refresh);
+  /**
+   * 设置 Token
+   * @param {String} value Token值
+   * @param {Boolean} refresh 是否是RefreshToken
+   * @param {Number} expire 过期时间，单位秒
+   */
+  const setToken = (value, refresh = false, expire = 0) => {
+    _setToken(value, refresh, expire);
     if (!refresh) {
       token.value = value;
     }

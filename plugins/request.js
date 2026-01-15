@@ -189,8 +189,9 @@ export function setupRequest(baseURL) {
             if (!isRefreshing) {
               isRefreshing = true;
               AuthAPI.refreshToken()
-                .then(({ tokenType, accessToken }) => {
-                  useAuthStore().setToken(tokenType ? `${tokenType} ${accessToken}` : accessToken);
+                .then(({ tokenType, accessToken, expiresIn }) => {
+                  const prefix = tokenType ? `${tokenType} ` : "";
+                  useAuthStore().setToken(prefix + accessToken, false, expiresIn);
                   pendingRequests.forEach((callback) => callback());
                 })
                 .finally(() => {
