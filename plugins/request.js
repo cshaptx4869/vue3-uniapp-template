@@ -6,7 +6,7 @@ import { ksort } from "@/utils";
 import { getToken } from "@/utils/token";
 import MD5 from "crypto-js/md5";
 
-// 接口签名
+// 接口签名: 只是一种轻量级的请求合法性校验，防止普通用户随意调用 API
 const API_SAFE = false;
 const API_KEY = "8oJliIOB2gKLFHec0jmM7Z5S9Y4UdQnP";
 // 启用 refreshToken
@@ -18,12 +18,20 @@ const HeaderEnum = {
   I18N: "I18n",
   SIGN: "Sign",
 };
-// code值
+// 响应code值
 const CodeEnum = {
   SUCCESS: 200,
   ACCESS_TOKEN_INVALID: 4003,
   REFRESH_TOKEN_INVALID: 4004,
 };
+// 域名
+let baseURL = import.meta.env.VITE_APP_BASE_URL;
+// #ifdef H5
+if (import.meta.env.VITE_APP_PROXY_PREFIX !== "") {
+  // H5环境做跨域处理
+  baseURL = import.meta.env.VITE_APP_PROXY_PREFIX;
+}
+// #endif
 
 /** 退出登录（会重定向到登录页） */
 function signOut() {
@@ -33,11 +41,11 @@ function signOut() {
 
 /**
  * 设置请求配置
- * @param {string} baseURL 域名
+ * uni.$uv.http 为 Request 实例。详见 @/uni_modules/uv-ui-tools/libs/luch-request
  * @see https://www.uvui.cn/js/http.html
  * @see https://github.com/lei-mu/luch-request
  */
-export function setupRequest(baseURL) {
+export function setupRequest() {
   // 请求重试队列，每一项将是一个待执行的函数形式
   let pendingRequests = [];
   // 是否正在刷新token的标记

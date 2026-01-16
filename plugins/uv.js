@@ -2,11 +2,15 @@
 import uvUI from "@/uni_modules/uv-ui-tools";
 import { setupRequest } from "./request";
 
+/**
+ * uv-ui扩展配置
+ * @param {Vue} app Vue实例
+ * @see https://www.uvui.cn/components/setting.html
+ */
 export function setupUV(app) {
-  /* UV扩展配置 https://www.uvui.cn/components/setting.html */
+  // 扩展配置 - JS工具库: uv-ui内置的方法默认不再挂载到uni对象之上，也就意味着默认情况下不能在项目中直接使用uni.$uv.xxx使用内置方法。但是可以通过扩展可以解决，通过如下方式进行配置即可
   app.use(uvUI);
-
-  /* 调用setConfig方法，方法内部会进行对象属性深度合并，可以放心嵌套配置 */
+  // 扩展配置 - setConfig: 调用setConfig方法，方法内部会进行对象属性深度合并，可以放心嵌套配置
   uni.$uv.setConfig({
     // 修改$uv.config对象的属性
     config: {
@@ -26,16 +30,8 @@ export function setupUV(app) {
       // ......
     },
   });
-
-  /* 初始化请求配置 https://www.uvui.cn/js/http.html */
-  let baseURL = import.meta.env.VITE_APP_BASE_URL;
-  // #ifdef H5
-  if (import.meta.env.VITE_APP_PROXY_PREFIX !== "") {
-    // H5环境做跨域处理
-    baseURL = import.meta.env.VITE_APP_PROXY_PREFIX;
-  }
-  // #endif
-  setupRequest(baseURL);
+  // 扩展配置 - Http请求: 初始化请求配置
+  setupRequest();
 }
 
 export const { http } = uni.$uv;
